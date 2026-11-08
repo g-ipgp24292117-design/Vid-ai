@@ -1,0 +1,23 @@
+{
+  "name": "vid-ai",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "setup": "./scripts/setup.sh",
+    "doctor": "hyperframes doctor"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/g-ipgp24292117-design/Vid-ai.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/g-ipgp24292117-design/Vid-ai/issues"
+  },
+  "homepage": "https://github.com/g-ipgp24292117-design/Vid-ai#readme",
+  "dependencies": {
+    "hyperframes": "^0.9.23"
+  }
+}
