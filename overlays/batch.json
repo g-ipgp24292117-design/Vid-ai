@@ -328,5 +328,16 @@
   "accent": "#7cc4ff",
   "dur": 4.5,
   "output": "renders/L29.webm"
+ },
+ {
+  "kind": "fix",
+  "tag": "Soalan 2/10 · kata nama am",
+  "text": "",
+  "wrong": "Pasar malam",
+  "right": "pasar malam",
+  "align": "left",
+  "accent": "#6dffa8",
+  "dur": 4.5,
+  "output": "renders/L30.webm"
  }
 ]

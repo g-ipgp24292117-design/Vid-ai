@@ -53,3 +53,4 @@ Rakaman sebenar: 20:55.40 · Grafik penerangan: 06:20.00
 | 25:52.60 | S10 | Segmen 10 · Rakaman sebenar | Pelaksanaan Rumusan & Refleksi |
 | 26:00.40 | S10 | Rumusan guru | Menggunakan perkataan dengan betul dan tepat |
 | 26:21.90 | S10 | Penutup kelas | Sorakan penutup kelas |
+| 15:41.50 | S08 | Soalan 2/10 · kata nama am | Pasar malam → pasar malam |

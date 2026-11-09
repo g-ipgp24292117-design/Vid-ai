@@ -76,6 +76,8 @@ LABELS = [
     ("IMG_8241", 178.2, "chapter", "Segmen 10 · Rakaman sebenar", "Pelaksanaan Rumusan & Refleksi", "", "", 5.5, "left", SKY),
     ("IMG_8241", 186.0, "note", "Rumusan guru", "Menggunakan perkataan dengan betul dan tepat", "", "", 5.0, "left", SKY),
     ("IMG_8241", 207.5, "note", "Penutup kelas", "Sorakan penutup kelas", "", "", 4.5, "left", SKY),
+    # appended (keeps earlier label ids stable): question 2, answer confirmed on screen "TEPAT SEKALI! +100"
+    ("IMG_8236", 138.0, "fix", "Soalan 2/10 · kata nama am", "", "Pasar malam", "pasar malam", 4.5, "left", GREEN),
 ]
 
 # Sound effects at scene-local times inside graphics scenes: scene -> [(time, file, gain_db)]
