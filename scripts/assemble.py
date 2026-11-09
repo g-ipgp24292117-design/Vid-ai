@@ -76,8 +76,25 @@ def stage_clips():
                  "-vf", f"fps={FPS},format=yuv420p", *VENC, out])
             continue
         mine = [l for l in labels if l["src"] == p["src"] and p["in"] <= l["src_time"] < p["out"]]
-        cmd = ["ffmpeg", "-v", "error", "-y", "-ss", f"{p['in']:.4f}", "-t", f"{D:.4f}", "-i", FOOT / f"{p['src']}.MOV"]
-        fc = [f"[0:v]scale=1920:1080:flags=lanczos,fps={FPS},{GRADE},format=yuv420p,setpts=PTS-STARTPTS[v0]"]
+        span = p["out"] - p["in"]
+        cmd = ["ffmpeg", "-v", "error", "-y", "-ss", f"{p['in']:.4f}", "-t", f"{span:.4f}", "-i", FOOT / f"{p['src']}.MOV"]
+        rngs = p.get("ranges") or [[p["in"], p["out"]]]
+        xf = p.get("xf", 0.4)
+        base = f"[0:v]scale=1920:1080:flags=lanczos,fps={FPS},{GRADE},format=yuv420p,setpts=PTS-STARTPTS"
+        if len(rngs) == 1:
+            fc = [base + "[v0]"]
+        else:
+            # keep only the ranges; join them with short dissolves so in-shot cuts are not abrupt
+            n = len(rngs)
+            fc = [base + ",split=" + str(n) + "".join(f"[s{i}]" for i in range(n))]
+            for i, (a, b) in enumerate(rngs):
+                fc.append(f"[s{i}]trim=start={a - p['in']:.4f}:end={b - p['in']:.4f},setpts=PTS-STARTPTS[c{i}]")
+            prev, acc = "c0", rngs[0][1] - rngs[0][0]
+            for i in range(1, n):
+                outl = "v0" if i == n - 1 else f"x{i}"
+                fc.append(f"[{prev}][c{i}]xfade=transition=fade:duration={xf}:offset={acc - xf:.4f}[{outl}]")
+                acc += (rngs[i][1] - rngs[i][0]) - xf
+                prev = outl
         last = "v0"
         for k, l in enumerate(mine, start=1):
             cmd += ["-c:v", "libvpx-vp9", "-i", ROOT / "overlays" / "renders" / f"{l['id']}.webm"]
@@ -86,8 +103,8 @@ def stage_clips():
             fc.append(f"[{last}][o{k}]overlay=0:0:eof_action=pass:format=auto[v{k}]")
             last = f"v{k}"
         # soft dips: longer at segment boundaries next to graphics, short between camera clips
-        fin = 0.35 if p["prev_kind"] == "graphics" or p["first"] else 0.12
-        fout = 0.35 if p["next_kind"] == "graphics" or p["last"] else 0.12
+        fin = 0.35 if p["prev_kind"] == "graphics" or p["first"] else 0.2
+        fout = 0.35 if p["next_kind"] == "graphics" or p["last"] else 0.2
         fc.append(f"[{last}]fade=t=in:st=0:d={fin}:color={NAVY},fade=t=out:st={D - fout:.4f}:d={fout}:color={NAVY},format=yuv420p[vout]")
         cmd += ["-filter_complex", ";".join(fc), "-map", "[vout]", "-an", "-t", f"{D:.4f}", *VENC, out]
         run(cmd)
@@ -128,11 +145,23 @@ def stage_audio():
     for p in parts():
         if p["kind"] != "footage":
             continue
-        raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{p['in']:.4f}", "-t", f"{p['dur_out']:.4f}",
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{p['in']:.4f}", "-t", f"{p['out'] - p['in']:.4f}",
                               "-i", str(FOOT / f"{p['src']}.MOV"), "-vn", "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"],
                              check=True, capture_output=True).stdout
-        a = np.frombuffer(raw, dtype=np.float32).copy()
-        fi = int(SR * (0.3 if p["first"] else 0.03)); fo = int(SR * (0.3 if p["last"] else 0.03))
+        full = np.frombuffer(raw, dtype=np.float32).copy()
+        rngs = p.get("ranges") or [[p["in"], p["out"]]]
+        X = int(round(p.get("xf", 0.4) * SR))
+        a = None
+        for (r0, r1) in rngs:  # equal-power crossfade at every in-shot cut, matching the video dissolve
+            piece = full[int(round((r0 - p["in"]) * SR)): int(round((r1 - p["in"]) * SR))].copy()
+            if a is None:
+                a = piece
+                continue
+            t = np.linspace(0, np.pi / 2, X, dtype=np.float32)
+            mixed = a[-X:] * np.cos(t) + piece[:X] * np.sin(t)
+            a = np.concatenate([a[:-X], mixed, piece[X:]])
+        a = a[: int(round(p["dur_out"] * SR))]
+        fi = int(SR * (0.3 if p["first"] else 0.2)); fo = int(SR * (0.3 if p["last"] else 0.2))
         a[:fi] *= np.linspace(0, 1, fi, dtype=np.float32); a[-fo:] *= np.linspace(1, 0, fo, dtype=np.float32)
         s = int(round(p["t_out"] * SR)); e = min(N, s + len(a))
         dlg[s:e] = a[: e - s]

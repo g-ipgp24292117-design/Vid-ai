@@ -11,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 FPS = 30
+XF = 0.4  # crossfade (s) at every cut inside a shot: video xfade + audio crossfade
 
 GOLD, SKY, CYAN, GREEN = "#f5c451", "#7cc4ff", "#5ff0ff", "#6dffa8"
 
@@ -25,18 +26,24 @@ SEGMENTS = [
     {"id": "S04", "title": "Penerangan Aktiviti Sorok Kad Mercu Tanda", "music": "treasure",
      "parts": [{"kind": "graphics", "scene": "s04", "start": 120, "dur": 62}]},
     {"id": "S05", "title": "Pelaksanaan Aktiviti Sorok Kad Mercu Tanda", "music": "treasure",
-     "parts": [{"kind": "footage", "src": "IMG_8233", "in": 0.0, "out": 40.0},
-               {"kind": "footage", "src": "IMG_8235", "in": 0.0, "out": 229.5}]},
+     "parts": [{"kind": "footage", "src": "IMG_8233", "in": 0.0, "out": 36.0},
+               {"kind": "footage", "src": "IMG_8235", "in": 0.0, "out": 229.5,
+                "cuts": [(146.0, 153.5), (162.0, 165.0), (170.0, 173.9)]}]},
     {"id": "S06", "title": "Penerangan Teknologi Augmented Reality", "music": "ar",
      "parts": [{"kind": "graphics", "scene": "s06", "start": 182, "dur": 52}]},
     {"id": "S07", "title": "Penerangan Permainan Misi Tembak Kata", "music": "game",
      "parts": [{"kind": "graphics", "scene": "s07", "start": 234, "dur": 72}]},
     {"id": "S08", "title": "Pelaksanaan Pengajaran Menggunakan AR", "music": "game",
-     "parts": [{"kind": "footage", "src": "IMG_8236", "in": 0.0, "out": 142.5},
-               {"kind": "footage", "src": "IMG_8237", "in": 0.5, "out": 145.0},
-               {"kind": "footage", "src": "IMG_8238", "in": 0.0, "out": 200.9},
-               {"kind": "footage", "src": "IMG_8239", "in": 0.0, "out": 31.0},
-               {"kind": "footage", "src": "IMG_8241", "in": 0.0, "out": 177.6}]},
+     "parts": [{"kind": "footage", "src": "IMG_8236", "in": 0.0, "out": 142.5,
+                "cuts": [(89.0, 93.5), (106.5, 126.0)]},
+               {"kind": "footage", "src": "IMG_8237", "in": 0.5, "out": 145.0,
+                "cuts": [(58.2, 62.9)]},
+               {"kind": "footage", "src": "IMG_8238", "in": 0.0, "out": 200.9,
+                "cuts": [(126.4, 137.8)]},
+               {"kind": "footage", "src": "IMG_8239", "in": 0.0, "out": 31.0,
+                "cuts": [(7.6, 24.0)]},
+               {"kind": "footage", "src": "IMG_8241", "in": 8.8, "out": 177.6,
+                "cuts": [(57.0, 73.3), (118.5, 123.8), (136.0, 139.6)]}]},
     {"id": "S09", "title": "Penerangan Rumusan dan Tiket Refleksi", "music": "reflection",
      "parts": [{"kind": "graphics", "scene": "s09", "start": 306, "dur": 52}]},
     {"id": "S10", "title": "Pelaksanaan Rumusan dan Refleksi", "music": "reflection",
@@ -116,7 +123,11 @@ def build():
         for p in seg["parts"]:
             if p["kind"] == "footage":
                 p["in"], p["out"] = snap(p["in"]), snap(p["out"])
-                dur = snap(p["out"] - p["in"])
+                cuts = sorted((snap(a), snap(b)) for a, b in p.get("cuts", []))
+                edges = [p["in"]] + [x for c in cuts for x in c] + [p["out"]]
+                p["ranges"] = [[edges[i], edges[i + 1]] for i in range(0, len(edges), 2)]
+                p["xf"] = XF
+                dur = snap(sum(b - a for a, b in p["ranges"]) - XF * (len(p["ranges"]) - 1))
             else:
                 dur = snap(p["dur"])
             p["dur_out"] = dur
@@ -132,8 +143,17 @@ def build():
                     hit = (seg, p)
         assert hit, (src, st)
         seg, p = hit
-        local = snap(st - p["in"])
-        dur = min(dur, p["dur_out"] - local)
+        acc = 0.0
+        for k, (a, b) in enumerate(p["ranges"]):
+            if a <= st < b:
+                local = snap(acc + (st - a))
+                room = (b - st) - (XF if k < len(p["ranges"]) - 1 else 0.0)
+                break
+            acc += (b - a) - XF
+        else:
+            raise AssertionError(f"label {src}@{st} falls inside a cut")
+        dur = min(dur, room, p["dur_out"] - local)
+        assert dur >= 3.0, (src, st, dur)
         labels.append({"id": f"L{i:02d}", "segment": seg["id"], "src": src, "src_time": st, "local": local,
                        "t_out": snap(p["t_out"] + local), "dur": snap(dur), "kind": kind,
                        "vars": {"kind": kind, "tag": tag, "text": text, "wrong": wrong, "right": right,
@@ -160,7 +180,7 @@ def main():
           f"Jumlah durasi: **{fmt(total)}** ({total:.1f} s) · 1920×1080 · 30 fps", "",
           "## Ringkasan durasi setiap segmen", "", "| Segmen | Tajuk | Mula | Tamat | Durasi | Sumber |", "|---|---|---|---|---|---|"]
     for seg, tl in zip(SEGMENTS, timeline):
-        srcs = ", ".join(f"{p['src']} {p['in']:.1f}–{p['out']:.1f}s" if p["kind"] == "footage" else f"grafik `{p['scene']}`"
+        srcs = ", ".join(f"{p['src']} " + " + ".join(f"{a:.1f}–{b:.1f}" for a, b in p["ranges"]) + "s" if p["kind"] == "footage" else f"grafik `{p['scene']}`"
                          for p in seg["parts"])
         md.append(f"| {seg['id']} | {seg['title']} | {fmt(tl['start'])} | {fmt(tl['end'])} | {fmt(tl['end'] - tl['start'])} | {srcs} |")
     foot = sum(p["dur_out"] for s in SEGMENTS for p in s["parts"] if p["kind"] == "footage")
