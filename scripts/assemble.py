@@ -207,9 +207,8 @@ def stage_audio():
 def stage_mux():
     lst = EDIT / "clips" / "list.txt"
     lst.write_text("".join(f"file '{p['idx']:02d}.mp4'\n" for p in parts()))
-    run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", EDIT / "video.mp4"])
-    run(["ffmpeg", "-v", "error", "-y", "-i", EDIT / "video.mp4", "-i", EDIT / "audio" / "mix.m4a", "-map", "0:v", "-map", "1:a",
-         "-c", "copy", "-movflags", "+faststart", "-shortest", ROOT / "output" / OUT_NAME])
+    run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-i", EDIT / "audio" / "mix.m4a",
+         "-map", "0:v", "-map", "1:a", "-c", "copy", "-movflags", "+faststart", "-shortest", ROOT / "output" / OUT_NAME])
 
 
 def stage_preview():
