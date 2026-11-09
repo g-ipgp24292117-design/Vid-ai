@@ -157,7 +157,10 @@ def stage_audio():
         gain = np.zeros(e - s, np.float32)
         for p in seg["parts"]:
             ps, pe = int(round(p["t_out"] * SR)) - s, int(round((p["t_out"] + p["dur_out"]) * SR)) - s
-            gain[ps:pe] = db(EDL["music_gain_db"][p["kind"]])
+            g = EDL["music_gain_db"][p["kind"]]
+            if p["kind"] == "graphics":
+                g = EDL.get("scene_music_gain_db", {}).get(p["scene"], g)
+            gain[ps:pe] = db(g)
         k = int(0.8 * SR)  # smooth gain changes
         gain = np.convolve(gain, np.ones(k, np.float32) / k, mode="same")
         fi, fo = int(1.2 * SR), int(2.0 * SR)

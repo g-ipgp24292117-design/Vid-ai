@@ -99,6 +99,8 @@ SFX = {
 LABEL_SFX = {"chapter": ("whoosh-short", -18, 0.05), "note": ("click-soft", -20, 0.1), "fix": ("pop", -18, 1.8)}
 
 MUSIC_GAIN_DB = {"graphics": -15.0, "footage": -27.0}
+# Per-scene music gain over graphics, measured so every explanation scene lands near -19 LUFS (dialogue ~ -16).
+SCENE_MUSIC_GAIN_DB = {"s01": -14.5, "s02": -14.5, "s04": -11.0, "s06": -11.0, "s07": -12.0, "s09": -9.5, "s10": -11.0}
 
 
 def snap(t):
@@ -145,7 +147,8 @@ def fmt(s):
 def main():
     timeline, labels, total = build()
     edl = {"fps": FPS, "total": total, "segments": SEGMENTS, "timeline": timeline, "labels": labels,
-           "sfx": SFX, "label_sfx": LABEL_SFX, "music_gain_db": MUSIC_GAIN_DB}
+           "sfx": SFX, "label_sfx": LABEL_SFX, "music_gain_db": MUSIC_GAIN_DB,
+           "scene_music_gain_db": SCENE_MUSIC_GAIN_DB}
     (ROOT / "footage/edit").mkdir(parents=True, exist_ok=True)
     (ROOT / "footage/edit/edl.json").write_text(json.dumps(edl, ensure_ascii=False, indent=1))
     rows = [dict(l["vars"], output=f"renders/{l['id']}.webm") for l in labels]
