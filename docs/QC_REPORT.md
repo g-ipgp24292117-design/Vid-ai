@@ -17,7 +17,7 @@ Semua angka di bawah **diukur** pada fail akhir (ffprobe / ffmpeg). Audio tidak 
 | Boleh dibuka | Nyahkod penuh tanpa sebarang ralat (`ffmpeg -v error … -f null`) bagi fail akhir, preview dan setiap bahagian; faststart untuk main serta-merta |
 | Skrin hitam tidak disengajakan (blackdetect ≥0.25 s) | **Tiada.** Satu-satunya hitam: pudar penutup 0.67 s terakhir (disengajakan) |
 | Audio terputus (silencedetect −45 dB ≥1 s) | **Tiada** |
-| Kenyaringan keseluruhan | −16.4 LUFS, puncak −3.3 dBFS |
+| Kenyaringan keseluruhan | −16.4 LUFS, puncak −3.6 dBFS |
 | Kenyaringan dialog (S03/S05/S08/S10) | −14.8 hingga −16.0 LUFS — suara guru & murid dominan |
 | Kenyaringan grafik (S01/S02/S04/S06/S07/S09/penutup) | −20.1 hingga −21.6 LUFS (muzik + SFX, sengaja di bawah dialog) |
 | Susunan 10 segmen | Betul: S01→S10 mengikut struktur prompt |
