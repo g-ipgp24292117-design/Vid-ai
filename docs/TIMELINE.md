@@ -54,3 +54,4 @@ Rakaman sebenar: 19:02.10 · Grafik penerangan: 06:20.00
 | 24:07.10 | S10 | Rumusan guru | Menggunakan perkataan dengan betul dan tepat |
 | 24:28.60 | S10 | Penutup kelas | Sorakan penutup kelas |
 | 14:57.10 | S08 | Soalan 2/10 · kata nama am | Pasar malam → pasar malam |
+| 20:56.80 | S08 | Soalan 8/10 · penjodoh bilangan | Ibu membeli sesikat pisang di pasar. |

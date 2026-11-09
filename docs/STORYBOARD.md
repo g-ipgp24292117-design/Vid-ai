@@ -65,7 +65,7 @@ Cincin HUD, garis imbasan digital; persamaan **Dunia sebenar (rakaman) + Elemen 
 Reticle sasaran; statistik 10 soalan · 3 pilihan · skor & kombo; skrin permainan direka semula dengan suapan kamera sebenar samar di latar; 5 langkah diserlahkan mengikut giliran menggunakan contoh sebenar Soalan 1: "Ayah membeli **seekor** kerusi…" → reticle mengunci **Sebuah** (arahan sebenar: *telunjuk lurus, jari lain bengkok · tahan ±1 saat = KUNCI · rapatkan ibu jari ke telunjuk = TEMBAK*) → tembakan → "BETUL!" + skor; B-roll murid bermain. Muzik: *interactive gaming*. SFX: target lock (ping), tembakan (impact), kejayaan (chime).
 
 ## S08 — Pelaksanaan Pengajaran Menggunakan AR · 13:03–23:06 (10:02) · *rakaman IMG_8236, 8237, 8238, 8239, 8241 (8.8–177.6 s); jeda & ulangan dibuang*
-Semua soalan yang dirakam dikekalkan mengikut susunan sebenar (Soalan 5 tidak dirakam). 10 kad pembetulan untuk soalan 1, 2, 3, 4, 6, 7, 9, 10 dan dua kesalahan petikan.
+Semua soalan yang dirakam dikekalkan mengikut susunan sebenar (Soalan 5 tidak dirakam). Setiap soalan yang dirakam (1, 2, 3, 4, 6, 7, 8, 9, 10) dan dua kesalahan petikan mempunyai kad.
 | Masa video | Soalan / peristiwa | Kad pembetulan |
 |---|---|---|
 | 13:04 | Murid dipilih untuk bermain | Tag segmen 08 |
@@ -78,7 +78,7 @@ Semua soalan yang dirakam dikekalkan mengikut susunan sebenar (Soalan 5 tidak di
 | 17:53 | S6 "Bolehkah patik membantu cikgu…" | patik → **saya** |
 | 19:27 | Guru menerangkan "beliau" | "Beliau" untuk orang ternama atau bergelar |
 | 19:37 | S7 "Beliau sangat gembira…" | beliau → **dia** |
-| 20:30–20:44 | S8 "Ibu membeli ___ pisang" — bacaan berulang dipendekkan; guru memberi galakan "Semua orang buat kesalahan" (20:37) | — |
+| 20:30–20:44 | S8 "Ibu membeli ___ pisang" — bacaan berulang dipendekkan; guru memberi galakan "Semua orang buat kesalahan" (20:37) | "Ibu membeli **sesikat** pisang di pasar." (20:56, ketika guru menerangkan "Sesikat itu penjodoh bilangan") |
 | 21:54 | S9 "Ayah memelihara lima buah ikan…" | lima buah ikan → **lima ekor ikan** |
 | 23:00 | S10 "Kakak membeli dua helai kasut…" | → **dua pasang kasut** |
 

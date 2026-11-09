@@ -25,7 +25,7 @@ Semua angka di bawah **diukur** pada fail akhir (ffprobe / ffmpeg). Audio tidak 
 | Kelancaran potongan | 11 potongan dalam syot: dissolve video 0.4 s + crossfade audio equal-power; pertukaran kamera: dip 0.2 s; 11 dissolve disemak frame demi frame |
 | Footage berulang | Tiada. Setiap saat rakaman digunakan sekali sahaja (B-roll dalam grafik ialah petikan pendek, senyap, sebagai ilustrasi penerangan) |
 | Dialog penting terpotong | Tiada — potongan hanya di hujung/permulaan fail; setiap fail rakaman PdP dikekalkan hampir penuh |
-| Grafik menutup wajah | 31 label disemak satu-satu pada frame sebenar; 6 dialihkan ke kanan, 2 digugurkan kerana kedua-dua sisi menutup wajah/soalan di TV |
+| Grafik menutup wajah | 32 label disemak satu-satu pada frame sebenar; 6 dialihkan ke kanan; 1 label (close-up murid ketawa di IMG_8239) digugurkan kerana kedua-dua sisi menutup wajah; kad Soalan 8 dipindahkan ke saat guru menerangkan jawapan supaya tidak menutup TV |
 | Ejaan | Semua teks pada skrin disemak (Bahasa Melayu baku) |
 | Peralihan | 15 sempadan potong disemak (frame ±0.6 s): tiada kilatan atau frame salah |
 
@@ -33,5 +33,5 @@ Semua angka di bawah **diukur** pada fail akhir (ffprobe / ffmpeg). Audio tidak 
 - **Tiada narasi** (Pilihan C). Segmen penerangan menggunakan teks, motion graphics, B-roll sebenar dan muzik.
 - **Muzik latar dijana secara tempatan (MusicGen small)**: enam klip 20 s yang digelung dengan crossfade. Kualitinya sederhana dan tidak didengar oleh manusia. Untuk muzik berkualiti studio, log masuk HeyGen (`npx hyperframes auth login`) atau sediakan trek sendiri dan jalankan semula `scripts/assemble.py audio mux`.
 - **Transkrip** dihasilkan dengan Whisper tempatan (kunci ElevenLabs ditolak). Ia digunakan untuk titik potong dan storyboard sahaja, tidak dipaparkan sebagai sari kata.
-- Soalan 5 permainan tidak dirakam, jadi tiada kad untuknya. Soalan 8 tidak diberi kad kerana label akan menutup soalan di TV (ayat dan jawapannya kekal jelas dalam rakaman).
+- Soalan 5 permainan tidak dirakam, jadi tiada kad untuknya. Semua soalan lain yang dirakam mempunyai kad.
 - IMG_8234 dan IMG_8240 tiada dalam folder Drive.

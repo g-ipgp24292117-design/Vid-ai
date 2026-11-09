@@ -339,5 +339,16 @@
   "accent": "#6dffa8",
   "dur": 4.5,
   "output": "renders/L30.webm"
+ },
+ {
+  "kind": "note",
+  "tag": "Soalan 8/10 · penjodoh bilangan",
+  "text": "Ibu membeli sesikat pisang di pasar.",
+  "wrong": "",
+  "right": "",
+  "align": "left",
+  "accent": "#6dffa8",
+  "dur": 5.5,
+  "output": "renders/L31.webm"
  }
 ]
