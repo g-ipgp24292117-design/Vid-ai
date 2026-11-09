@@ -7,3 +7,4 @@ output/
 graphics/renders/
 overlays/batch.json.bak
 .transcode-cache/
+__pycache__/
