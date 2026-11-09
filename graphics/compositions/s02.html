@@ -1,0 +1,171 @@
+<template>
+  <style>
+    @font-face { font-family: DocDisplay; src: url("assets/fonts/montserrat-latin-800-normal.woff2"); font-weight: 800; }
+    @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-400-normal.woff2"); font-weight: 400; }
+    @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-600-normal.woff2"); font-weight: 600; }
+    @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-500-normal.woff2"); font-weight: 500; }
+    @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-700-normal.woff2"); font-weight: 700; }
+    #root { position: absolute; inset: 0; overflow: hidden; color: #fff; font-family: DocBody, sans-serif;
+      background: radial-gradient(1100px 800px at 20% 80%, #2a2350 0%, #0c1d45 40%, #050c1d 80%); }
+    .s02-mono { font-family: DocMono, monospace; font-weight: 500; letter-spacing: .32em; text-transform: uppercase; color: #f5c451; }
+    /* Chapter card */
+    #s02-chap { position: absolute; inset: 0; }
+    #s02-towers { position: absolute; right: 230px; bottom: 0; width: 420px; height: 980px; }
+    #s02-towers path, #s02-towers polyline { fill: none; stroke: #f5c451; stroke-width: 2.4; stroke-linejoin: round; filter: drop-shadow(0 0 10px rgba(245,196,81,.55)); }
+    #s02-num { position: absolute; left: 150px; top: 250px; font-family: DocDisplay; font-weight: 800; font-size: 260px; line-height: 1;
+      color: transparent; -webkit-text-stroke: 3px rgba(245,196,81,.9); }
+    #s02-chap-tag { position: absolute; left: 160px; top: 560px; font-size: 24px; }
+    #s02-chap-title { position: absolute; left: 150px; top: 610px; font-family: DocDisplay; font-weight: 800; font-size: 104px; letter-spacing: -.02em; }
+    #s02-chap-rule { position: absolute; left: 160px; top: 760px; width: 520px; height: 4px; background: linear-gradient(90deg, #f5c451, transparent); transform-origin: left; }
+    #s02-chap-sub { position: absolute; left: 160px; top: 790px; font-size: 30px; color: #e8d9b0; }
+    /* Full-bleed video */
+    #s02-full { position: absolute; inset: 0; }
+    #s02-full-move { position: absolute; inset: 0; }
+    #s02-full video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    #s02-scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,12,29,.92) 0%, rgba(5,12,29,.7) 38%, rgba(5,12,29,.05) 70%); }
+    #s02-full-text { position: absolute; left: 130px; top: 300px; width: 760px; }
+    #s02-full-text h2 { font-family: DocDisplay; font-weight: 800; font-size: 74px; line-height: 1.05; margin: 20px 0 28px; }
+    #s02-full-text h2 em { font-style: normal; color: #f5c451; }
+    #s02-full-text p { font-size: 32px; line-height: 1.45; color: #dce8f8; }
+    #s02-timer { position: absolute; left: 130px; top: 760px; display: flex; align-items: center; gap: 26px; }
+    #s02-timer svg { width: 120px; height: 120px; }
+    #s02-timer circle { fill: none; stroke-width: 7; }
+    #s02-timer .s02-track { stroke: rgba(245,196,81,.25); }
+    #s02-timer .s02-prog { stroke: #f5c451; stroke-linecap: round; transform: rotate(-90deg); transform-origin: 60px 60px; }
+    #s02-timer div { font-family: DocDisplay; font-weight: 800; font-size: 44px; }
+    #s02-timer small { display: block; font-family: DocMono; font-size: 18px; letter-spacing: .25em; color: #f5c451; font-weight: 500; }
+    #s02-rec { position: absolute; right: 70px; top: 60px; font-size: 18px; color: #fff; }
+    /* Reasons */
+    #s02-why { position: absolute; inset: 0; }
+    #s02-why h2 { position: absolute; left: 130px; top: 150px; font-family: DocDisplay; font-weight: 800; font-size: 64px; }
+    #s02-why-h { position: absolute; left: 132px; top: 118px; font-size: 20px; }
+    .s02-item { position: absolute; left: 130px; width: 900px; display: flex; gap: 34px; align-items: flex-start; }
+    .s02-item b { font-family: DocDisplay; font-weight: 800; font-size: 96px; line-height: .9; color: transparent; -webkit-text-stroke: 2px #f5c451; width: 110px; }
+    .s02-item h3 { font-family: DocDisplay; font-weight: 800; font-size: 42px; margin-bottom: 10px; }
+    .s02-item p { font-size: 28px; line-height: 1.4; color: #cfdcf0; }
+    #s02-pip { position: absolute; right: 120px; top: 260px; width: 660px; height: 371px; border-radius: 20px; overflow: hidden;
+      box-shadow: 0 0 0 2px rgba(245,196,81,.6), 0 30px 70px rgba(0,0,0,.6); }
+    #s02-pip video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    #s02-pip-tag { position: absolute; right: 120px; top: 650px; width: 660px; font-size: 18px; color: #e8d9b0; }
+    /* Chain */
+    #s02-chain { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    #s02-chain .s02-mono { font-size: 22px; margin-bottom: 40px; }
+    .s02-k { font-family: DocDisplay; font-weight: 800; letter-spacing: -.01em; text-align: center; }
+    #s02-k1 { font-size: 56px; color: #fff; }
+    #s02-k2 { font-size: 92px; color: #f5c451; margin: 6px 0; }
+    #s02-k3 { font-size: 66px; color: #7cc4ff; }
+    .s02-arrow { width: 3px; height: 54px; margin: 14px auto; background: linear-gradient(#f5c451, rgba(245,196,81,0)); transform-origin: top; }
+    #s02-chips { display: flex; gap: 22px; margin-top: 46px; }
+    .s02-chip { padding: 16px 30px; border-radius: 999px; font-size: 28px; font-weight: 600; background: rgba(30,107,255,.25); border: 1px solid rgba(124,196,255,.7); }
+    #s02-fade { position: absolute; inset: 0; background: #071229; }
+  </style>
+  <div id="root" data-composition-id="s02" data-width="1920" data-height="1080">
+    <div id="s02-chap" class="clip" data-start="0" data-duration="6">
+      <svg id="s02-towers" viewBox="0 0 300 700" preserveAspectRatio="xMidYMax meet">
+        <polyline id="s02-tw1" points="60,700 60,330 66,330 66,270 72,270 72,215 80,215 80,170 88,170 88,135 93,135 95,40 97,135 102,135 102,170 110,170 110,215 118,215 118,270 124,270 124,330 130,330 130,700" />
+        <polyline id="s02-tw2" points="170,700 170,330 176,330 176,270 182,270 182,215 190,215 190,170 198,170 198,135 203,135 205,40 207,135 212,135 212,170 220,170 220,215 228,215 228,270 234,270 234,330 240,330 240,700" />
+        <path id="s02-bridge" d="M130 400 L170 400 M130 412 L170 412 M130 412 L150 470 L170 412" />
+      </svg>
+      <div id="s02-num">02</div>
+      <div id="s02-chap-tag" class="s02-mono">Penerangan</div>
+      <div id="s02-chap-title">Set Induksi</div>
+      <div id="s02-chap-rule"></div>
+      <div id="s02-chap-sub">Mercu tanda negara sebagai pintu masuk pembelajaran</div>
+    </div>
+
+    <div id="s02-full">
+      <div id="s02-full-move">
+        <video id="s02-v1" class="clip" src="assets/broll/tv.mp4" data-start="5.6" data-duration="19" muted playsinline></video>
+      </div>
+      <div id="s02-scrim"></div>
+      <div id="s02-full-text">
+        <div class="s02-mono" id="s02-ft-tag">Set induksi · ± 5 minit</div>
+        <h2 id="s02-ft-h">Video <em>Menara Berkembar PETRONAS</em></h2>
+        <p id="s02-ft-p">Pengajaran dimulakan dengan tayangan video bandar raya Kuala Lumpur dan mercu tanda yang dikenali oleh murid.</p>
+      </div>
+      <div id="s02-timer">
+        <svg viewBox="0 0 120 120"><circle class="s02-track" cx="60" cy="60" r="52" /><circle id="s02-prog" class="s02-prog" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7" /></svg>
+        <div><small>Tempoh</small>5 minit</div>
+      </div>
+      <div id="s02-rec" class="s02-mono">● Rakaman sebenar</div>
+    </div>
+
+    <div id="s02-why">
+      <div class="s02-mono" id="s02-why-h">Tujuan tayangan video</div>
+      <h2>Mengapa video ini?</h2>
+      <div class="s02-item" id="s02-i1" style="top:300px"><b>1</b><div><h3>Menarik perhatian</h3><p>Visual bandar raya Kuala Lumpur mencetuskan rasa ingin tahu sejak minit pertama.</p></div></div>
+      <div class="s02-item" id="s02-i2" style="top:520px"><b>2</b><div><h3>Mengaktifkan pengetahuan sedia ada</h3><p>Murid menyatakan apa yang mereka tahu tentang mercu tanda negara.</p></div></div>
+      <div class="s02-item" id="s02-i3" style="top:740px"><b>3</b><div><h3>Menghubungkan tema</h3><p>Mercu tanda menjadi benang merah seluruh pengajaran.</p></div></div>
+      <div id="s02-pip">
+        <video id="s02-v2" class="clip" src="assets/broll/hands.mp4" data-start="24.6" data-duration="18" muted playsinline></video>
+      </div>
+      <div id="s02-pip-tag" class="s02-mono">● Murid memberi respons</div>
+    </div>
+
+    <div id="s02-chain" class="clip" data-start="44.4" data-duration="15.6">
+      <div class="s02-mono">Daripada mercu tanda kepada tajuk</div>
+      <div class="s02-k" id="s02-k1">Menara Berkembar PETRONAS</div>
+      <div class="s02-arrow" id="s02-a1"></div>
+      <div class="s02-k" id="s02-k2">KLCC</div>
+      <div class="s02-arrow" id="s02-a2"></div>
+      <div class="s02-k" id="s02-k3">Kesalahan Kata dalam Ayat</div>
+      <div id="s02-chips">
+        <div class="s02-chip" id="s02-c1">Kata nama khas</div>
+        <div class="s02-chip" id="s02-c2">Kata ganti nama</div>
+        <div class="s02-chip" id="s02-c3">Penjodoh bilangan</div>
+      </div>
+    </div>
+    <div id="s02-fade" class="clip" data-start="59.3" data-duration="0.7"></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const lens = ["#s02-tw1", "#s02-tw2", "#s02-bridge"].map((s) => {
+        const el = document.querySelector(s);
+        const L = (el.getTotalLength && el.getTotalLength()) || 1400;
+        el.style.strokeDasharray = L + " " + (L + 20);
+        return [el, L];
+      });
+      lens.forEach(([el, L], i) =>
+        tl.fromTo(el, { strokeDashoffset: L + 10 }, { strokeDashoffset: 0, duration: 2.6, ease: "power2.inOut" }, 0.2 + i * 0.35));
+      tl.fromTo("#s02-towers", { y: 30, opacity: 0.0 }, { y: 0, opacity: 1, duration: 1.2, ease: "power2.out" }, 0);
+      tl.fromTo("#s02-num", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 1.0, ease: "power3.out" }, 0.4);
+      tl.fromTo("#s02-chap-tag", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 1.0);
+      tl.fromTo("#s02-chap-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: "power4.out" }, 1.2);
+      tl.fromTo("#s02-chap-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "power3.inOut" }, 1.7);
+      tl.fromTo("#s02-chap-sub", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7 }, 2.2);
+      tl.to("#s02-chap > *", { opacity: 0, duration: 0.5, ease: "power2.in" }, 5.2);
+
+      tl.fromTo("#s02-full-move", { scale: 1.12 }, { scale: 1.0, duration: 19, ease: "none" }, 5.6);
+      tl.fromTo("#s02-full-move", { opacity: 0 }, { opacity: 1, duration: 0.8, ease: "power1.out", immediateRender: false }, 5.6);
+      tl.fromTo("#s02-ft-tag", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.6 }, 6.4);
+      tl.fromTo("#s02-ft-h", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }, 6.8);
+      tl.fromTo("#s02-ft-p", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 9.4);
+      tl.fromTo("#s02-timer", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, 12.5);
+      tl.fromTo("#s02-prog", { strokeDashoffset: 326.7 }, { strokeDashoffset: 0, duration: 8, ease: "power1.inOut" }, 13.0);
+      tl.fromTo("#s02-rec", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 6.0);
+      tl.to("#s02-full-text, #s02-timer, #s02-rec", { opacity: 0, duration: 0.5 }, 24.0);
+
+      tl.fromTo("#s02-why-h", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 24.8);
+      tl.fromTo("#s02-why h2", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 25.0);
+      tl.fromTo("#s02-pip", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.9, ease: "power3.out" }, 25.4);
+      tl.fromTo("#s02-pip-tag", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 26.2);
+      ["#s02-i1", "#s02-i2", "#s02-i3"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, x: -60 }, { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" }, 27.0 + i * 5.2));
+      tl.to("#s02-why > *", { opacity: 0, duration: 0.5, ease: "power2.in" }, 43.8);
+
+      tl.fromTo("#s02-chain .s02-mono", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 44.6);
+      tl.fromTo("#s02-k1", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 45.0);
+      tl.fromTo("#s02-a1", { scaleY: 0 }, { scaleY: 1, duration: 0.6, ease: "power2.out" }, 47.2);
+      tl.fromTo("#s02-k2", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.8)" }, 47.8);
+      tl.fromTo("#s02-a2", { scaleY: 0 }, { scaleY: 1, duration: 0.6, ease: "power2.out" }, 50.2);
+      tl.fromTo("#s02-k3", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 50.8);
+      ["#s02-c1", "#s02-c2", "#s02-c3"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, y: 20, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(2)" }, 53.4 + i * 0.9));
+      tl.fromTo("#s02-fade", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.in" }, 59.3);
+      tl.set("#s02-full", { opacity: 0 }, 0); tl.set("#s02-full", { opacity: 1 }, 5.6); tl.set("#s02-full", { opacity: 0 }, 24.6);
+      tl.set("#s02-why", { opacity: 0 }, 0); tl.set("#s02-why", { opacity: 1 }, 24.6); tl.set("#s02-why", { opacity: 0 }, 44.4);
+      window.__timelines["s02"] = tl;
+    })();
+  </script>
+</template>

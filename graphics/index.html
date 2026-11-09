@@ -1,0 +1,51 @@
+<!doctype html>
+<html
+  lang="ms"
+  data-resolution="landscape"
+  data-composition-variables='[
+    {"id":"teacher_name","type":"string","label":"Nama guru pelatih","default":"Guru Pelatih"},
+    {"id":"teacher_role","type":"string","label":"Peranan / subjek","default":"Bahasa Melayu"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: DocDisplay; src: url("assets/fonts/montserrat-latin-800-normal.woff2"); font-weight: 800; }
+      @font-face { font-family: DocDisplay; src: url("assets/fonts/montserrat-latin-600-normal.woff2"); font-weight: 600; }
+      @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-400-normal.woff2"); font-weight: 400; }
+      @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-600-normal.woff2"); font-weight: 600; }
+      @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-500-normal.woff2"); font-weight: 500; }
+      @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-700-normal.woff2"); font-weight: 700; }
+      :root {
+        --navy: #071229;
+        --navy2: #0c1d45;
+        --blue: #1e6bff;
+        --sky: #7cc4ff;
+        --white: #ffffff;
+        --gold: #f5c451;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--navy); }
+      #root { position: relative; width: 100%; height: 100%; }
+    </style>
+  </head>
+  <body>
+    <!-- Segmen penerangan (Pilihan C: grafik + teks + B-roll sebenar). Setiap adegan dirender berasingan
+         dengan --start/--end dan disambung dengan rakaman PdP sebenar oleh scripts/assemble.py. -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="380" data-width="1920" data-height="1080">
+      <div id="s01" data-composition-id="s01" data-composition-src="compositions/s01.html" data-start="0" data-duration="60" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s02" data-composition-id="s02" data-composition-src="compositions/s02.html" data-start="60" data-duration="60" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s04" data-composition-id="s04" data-composition-src="compositions/s04.html" data-start="120" data-duration="62" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s06" data-composition-id="s06" data-composition-src="compositions/s06.html" data-start="182" data-duration="52" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s07" data-composition-id="s07" data-composition-src="compositions/s07.html" data-start="234" data-duration="72" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s09" data-composition-id="s09" data-composition-src="compositions/s09.html" data-start="306" data-duration="52" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="s10" data-composition-id="s10" data-composition-src="compositions/s10.html" data-start="358" data-duration="22" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,221 @@
+<template>
+  <style>
+    @font-face { font-family: DocDisplay; src: url("assets/fonts/montserrat-latin-800-normal.woff2"); font-weight: 800; }
+    @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-400-normal.woff2"); font-weight: 400; }
+    @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-600-normal.woff2"); font-weight: 600; }
+    @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-500-normal.woff2"); font-weight: 500; }
+    @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-700-normal.woff2"); font-weight: 700; }
+    #root { position: absolute; inset: 0; overflow: hidden; color: #fff; font-family: DocBody, sans-serif;
+      background: radial-gradient(1200px 800px at 50% 40%, #241a5e 0%, #0f1640 50%, #060a20 100%); }
+    .s07-mono { font-family: DocMono, monospace; font-weight: 700; letter-spacing: .26em; text-transform: uppercase; color: #ffd84d; }
+    #s07-stars { position: absolute; inset: 0; }
+    #s07-stars i { position: absolute; width: 3px; height: 3px; background: #fff; border-radius: 50%; }
+    /* chapter */
+    #s07-chap { position: absolute; inset: 0; }
+    #s07-reticle { position: absolute; right: 260px; top: 250px; width: 560px; height: 560px; }
+    #s07-reticle circle, #s07-reticle path { fill: none; stroke: #ff4d6d; stroke-width: 3; }
+    #s07-num { position: absolute; left: 150px; top: 250px; font-family: DocDisplay; font-weight: 800; font-size: 260px; line-height: 1; color: transparent; -webkit-text-stroke: 3px #ffd84d; }
+    #s07-chap-tag { position: absolute; left: 160px; top: 560px; font-size: 24px; }
+    #s07-chap-title { position: absolute; left: 150px; top: 610px; width: 1100px; font-family: DocDisplay; font-weight: 800; font-size: 96px; line-height: 1.02; letter-spacing: -.02em; }
+    #s07-chap-sub { position: absolute; left: 160px; top: 820px; font-size: 30px; color: #ffe9a8; }
+    /* stats */
+    #s07-stats { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    #s07-stats .s07-mono { font-size: 24px; margin-bottom: 50px; }
+    #s07-stat-row { display: flex; gap: 60px; }
+    .s07-stat { width: 420px; padding: 40px 30px; text-align: center; border-radius: 24px; background: rgba(255,255,255,.06); border: 2px solid rgba(255,216,77,.6); box-shadow: 0 0 40px rgba(255,216,77,.15) inset; }
+    .s07-stat b { display: block; font-family: DocDisplay; font-weight: 800; font-size: 110px; line-height: 1; color: #ffd84d; }
+    .s07-stat span { display: block; margin-top: 16px; font-size: 30px; font-weight: 600; }
+    /* steps + mock screen */
+    #s07-play { position: absolute; inset: 0; }
+    #s07-steps { position: absolute; left: 90px; top: 150px; width: 600px; }
+    #s07-steps .s07-mono { font-size: 20px; margin-bottom: 24px; display: block; }
+    .s07-st { position: relative; display: flex; gap: 20px; align-items: center; padding: 18px 20px; margin-bottom: 14px; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.12); }
+    .s07-st b { flex: none; width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-family: DocDisplay; font-weight: 800; font-size: 24px; background: rgba(255,255,255,.12); }
+    .s07-st p { font-size: 27px; font-weight: 600; line-height: 1.25; }
+    .s07-st small { display: block; font-size: 20px; font-weight: 400; color: #c9c4ef; margin-top: 4px; }
+    .s07-hl { position: absolute; inset: -2px; border-radius: 16px; border: 3px solid #ffd84d; box-shadow: 0 0 30px rgba(255,216,77,.45); opacity: 0; }
+    #s07-screen { position: absolute; left: 760px; top: 160px; width: 1080px; height: 640px; border-radius: 22px; overflow: hidden;
+      background: linear-gradient(160deg, #cbd4ff 0%, #9aa8f0 35%, #6d6ad8 100%); box-shadow: 0 0 0 10px #10142e, 0 40px 90px rgba(0,0,0,.6); }
+    #s07-feed { position: absolute; inset: 0; opacity: .32; mix-blend-mode: luminosity; }
+    #s07-feed video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    #s07-q { position: absolute; left: 150px; right: 270px; top: 30px; padding: 18px 24px; border-radius: 16px; background: #3a2a8c; border: 2px solid rgba(255,255,255,.6);
+      font-family: DocDisplay; font-weight: 800; font-size: 32px; line-height: 1.25; text-align: center; color: #fff; }
+    #s07-q .s07-bad { position: relative; display: inline-block; color: #ffd84d; }
+    #s07-q .s07-bad i { position: absolute; left: -4px; right: -4px; top: 52%; height: 4px; background: #ff4d6d; transform-origin: left; }
+    #s07-hud { position: absolute; right: 24px; top: 30px; width: 230px; padding: 14px 16px; border-radius: 14px; background: #3a2a8c; border: 2px solid rgba(255,255,255,.6); font-family: DocMono; font-weight: 700; font-size: 20px; line-height: 1.6; }
+    #s07-hud span { color: #ffd84d; }
+    #s07-cam { position: absolute; left: 24px; top: 30px; width: 110px; padding: 10px; border-radius: 12px; background: #3a2a8c; border: 2px solid rgba(255,255,255,.6); font-family: DocMono; font-size: 14px; text-align: center; }
+    #s07-cam i { display: block; width: 16px; height: 16px; margin: 0 auto 6px; border-radius: 50%; background: #45ff8a; box-shadow: 0 0 12px #45ff8a; }
+    .s07-b { position: absolute; top: 250px; width: 220px; height: 220px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: DocDisplay; font-weight: 800; font-size: 40px; color: #1f2a6b;
+      background: radial-gradient(circle at 35% 30%, #ffffff, #e2ebff 50%, #b9c9ff); border: 3px solid #fff; box-shadow: 0 0 40px rgba(255,255,255,.7); }
+    #s07-gesture { position: absolute; left: 30px; right: 30px; bottom: 26px; padding: 14px 20px; border-radius: 12px; background: rgba(40,30,110,.92); border: 2px solid #5ff0ff;
+      font-family: DocBody; font-weight: 600; font-size: 24px; text-align: center; }
+    #s07-gesture b { color: #ffd84d; }
+    #s07-cross { position: absolute; width: 240px; height: 240px; top: 240px; left: 80px; }
+    #s07-cross circle, #s07-cross path { fill: none; stroke: #ff4d6d; stroke-width: 6; }
+    #s07-lockring { stroke: #ffd84d !important; stroke-width: 10 !important; transform: rotate(-90deg); transform-origin: 120px 120px; }
+    #s07-burst { position: absolute; left: 90px; top: 250px; width: 220px; height: 220px; border-radius: 50%; border: 8px solid #ffd84d; }
+    #s07-ok { position: absolute; left: 0; right: 0; top: 140px; text-align: center; font-family: DocDisplay; font-weight: 800; font-size: 72px; color: #45ff8a; text-shadow: 0 0 30px rgba(20,60,40,.9), 0 0 30px rgba(69,255,138,.7); }
+    #s07-fixed { position: absolute; left: 760px; top: 830px; width: 1080px; text-align: center; font-family: DocDisplay; font-weight: 800; font-size: 40px; }
+    #s07-fixed em { font-style: normal; color: #45ff8a; }
+    /* footage */
+    #s07-foot { position: absolute; inset: 0; }
+    #s07-foot-move { position: absolute; inset: 0; }
+    #s07-foot video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    #s07-foot-band { position: absolute; left: 0; right: 0; bottom: 0; height: 280px; background: linear-gradient(transparent, rgba(6,10,32,.92)); }
+    #s07-foot-text { position: absolute; left: 110px; bottom: 80px; width: 1500px; }
+    #s07-foot-text .s07-mono { font-size: 18px; }
+    #s07-foot-text p { margin-top: 10px; font-size: 40px; font-weight: 600; line-height: 1.3; }
+    #s07-fade { position: absolute; inset: 0; background: #071229; }
+  </style>
+  <div id="root" data-composition-id="s07" data-width="1920" data-height="1080">
+    <div id="s07-stars"></div>
+
+    <div id="s07-chap" class="clip" data-start="0" data-duration="5.6">
+      <svg id="s07-reticle" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="80" /><circle cx="100" cy="100" r="40" stroke-dasharray="8 8" />
+        <path d="M100 0 L100 50 M100 150 L100 200 M0 100 L50 100 M150 100 L200 100" />
+      </svg>
+      <div id="s07-num">07</div>
+      <div id="s07-chap-tag" class="s07-mono">Penerangan</div>
+      <div id="s07-chap-title">Permainan Misi Tembak Kata</div>
+      <div id="s07-chap-sub">Taklimat misi sebelum murid bermain</div>
+    </div>
+
+    <div id="s07-stats" class="clip" data-start="5.2" data-duration="9">
+      <div class="s07-mono">Struktur permainan</div>
+      <div id="s07-stat-row">
+        <div class="s07-stat" id="s07-k1"><b id="s07-n10">10</b><span>soalan ayat</span></div>
+        <div class="s07-stat" id="s07-k2"><b>3</b><span>pilihan jawapan</span></div>
+        <div class="s07-stat" id="s07-k3"><b>★</b><span>skor &amp; kombo</span></div>
+      </div>
+    </div>
+
+    <div id="s07-play">
+      <div id="s07-steps">
+        <span class="s07-mono">Langkah permainan</span>
+        <div class="s07-st" id="s07-st1"><div class="s07-hl"></div><b>1</b><p>Akses bahan AR<small>Berdiri di hadapan kamera</small></p></div>
+        <div class="s07-st" id="s07-st2"><div class="s07-hl"></div><b>2</b><p>Baca ayat<small>Dengan kuat, untuk seluruh kelas</small></p></div>
+        <div class="s07-st" id="s07-st3"><div class="s07-hl"></div><b>3</b><p>Kenal pasti kesalahan<small>Perkataan yang tidak tepat</small></p></div>
+        <div class="s07-st" id="s07-st4"><div class="s07-hl"></div><b>4</b><p>Kunci &amp; tembak<small>Pilih jawapan yang betul</small></p></div>
+        <div class="s07-st" id="s07-st5"><div class="s07-hl"></div><b>5</b><p>Maklum balas<small>Serta-merta daripada permainan</small></p></div>
+      </div>
+      <div id="s07-screen">
+        <div id="s07-feed"><video id="s07-v0" class="clip" src="assets/broll/game.mp4" data-start="14" data-duration="44" data-playback-rate="0.46" muted playsinline></video></div>
+        <div id="s07-cam"><i></i>KAMERA<br />AKTIF</div>
+        <div id="s07-q">Ayah membeli <span class="s07-bad">seekor<i></i></span> kerusi di kedai perabot itu.</div>
+        <div id="s07-hud">SOALAN <span>1/10</span><br />SKOR <span id="s07-score">0</span><br />KOMBO <span id="s07-combo">0</span></div>
+        <div class="s07-b" id="s07-b1" style="left:90px">Sebuah</div>
+        <div class="s07-b" id="s07-b2" style="left:430px">Sebiji</div>
+        <div class="s07-b" id="s07-b3" style="left:770px">Sehelai</div>
+        <svg id="s07-cross" viewBox="0 0 240 240">
+          <circle cx="120" cy="120" r="100" />
+          <circle id="s07-lockring" cx="120" cy="120" r="112" stroke-dasharray="703.7" stroke-dashoffset="703.7" />
+          <path d="M120 0 L120 60 M120 180 L120 240 M0 120 L60 120 M180 120 L240 120" />
+        </svg>
+        <div id="s07-burst"></div>
+        <div id="s07-ok">BETUL!</div>
+        <div id="s07-gesture"><span id="s07-g1">Telunjuk lurus, jari lain bengkok · tahan ±1 saat = <b>KUNCI</b></span><span id="s07-g2"> · rapatkan ibu jari ke telunjuk = <b>TEMBAK</b></span></div>
+      </div>
+      <div id="s07-fixed">Ayah membeli <em>sebuah</em> kerusi di kedai perabot itu.</div>
+    </div>
+
+    <div id="s07-foot">
+      <div id="s07-foot-move">
+        <video id="s07-v1" class="clip" src="assets/broll/shoot.mp4" data-start="58.4" data-duration="13.6" muted playsinline></video>
+      </div>
+      <div id="s07-foot-band"></div>
+      <div id="s07-foot-text"><div class="s07-mono">Rakaman sebenar</div><p>Murid lain turut membantu, memberi sokongan dan menilai jawapan rakan.</p></div>
+    </div>
+    <div id="s07-fade" class="clip" data-start="71.3" data-duration="0.7"></div>
+  </div>
+  <script>
+    (function () {
+      let seed = 23;
+      const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      const host = document.getElementById("s07-stars");
+      const stars = [];
+      for (let i = 0; i < 60; i++) {
+        const d = document.createElement("i");
+        d.style.left = rnd() * 1920 + "px"; d.style.top = rnd() * 1080 + "px"; d.style.opacity = (0.2 + rnd() * 0.6).toFixed(2);
+        host.appendChild(d); stars.push([d, 0.5 + rnd() * 1.5]);
+      }
+      const tl = gsap.timeline({ paused: true });
+      stars.forEach(([d, k]) => tl.fromTo(d, { x: 0 }, { x: -120 * k, duration: 72, ease: "none" }, 0));
+
+      tl.fromTo("#s07-reticle", { opacity: 0, scale: 1.6, rotation: 45 }, { opacity: 1, scale: 1, rotation: 0, duration: 1.0, ease: "power3.out" }, 0.1);
+      tl.fromTo("#s07-reticle", { rotation: 0 }, { rotation: 30, duration: 4, ease: "none", immediateRender: false }, 1.1);
+      tl.fromTo("#s07-num", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 1.0, ease: "power3.out" }, 0.4);
+      tl.fromTo("#s07-chap-tag", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 1.0);
+      tl.fromTo("#s07-chap-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: "power4.out" }, 1.2);
+      tl.fromTo("#s07-chap-sub", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7 }, 2.0);
+      tl.to("#s07-chap > *", { opacity: 0, duration: 0.5, ease: "power2.in" }, 4.9);
+
+      tl.fromTo("#s07-stats .s07-mono", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 5.4);
+      ["#s07-k1", "#s07-k2", "#s07-k3"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, y: 50, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(1.8)" }, 6.0 + i * 1.6));
+      const cnt = { v: 0 };
+      tl.fromTo(cnt, { v: 0 }, { v: 10, duration: 1.3, ease: "power2.out", onUpdate: () => (document.getElementById("s07-n10").textContent = Math.round(cnt.v)) }, 6.0);
+      tl.to("#s07-stats > *", { opacity: 0, duration: 0.5 }, 13.6);
+
+      // steps
+      tl.fromTo("#s07-steps .s07-mono", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 14.1);
+      ["#s07-st1", "#s07-st2", "#s07-st3", "#s07-st4", "#s07-st5"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, x: -40 }, { opacity: 0.45, x: 0, duration: 0.5, ease: "power2.out" }, 14.3 + i * 0.25));
+      tl.fromTo("#s07-screen", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.9, ease: "power3.out" }, 14.4);
+      tl.set("#s07-q, #s07-hud, #s07-b1, #s07-b2, #s07-b3, #s07-cross, #s07-burst, #s07-ok, #s07-gesture, #s07-g2, #s07-fixed", { opacity: 0 }, 14.0);
+      const on = (n, t) => { tl.to("#s07-st" + n, { opacity: 1, duration: 0.3 }, t); tl.fromTo("#s07-st" + n + " .s07-hl", { opacity: 0 }, { opacity: 1, duration: 0.3 }, t); };
+      const off = (n, t) => { tl.to("#s07-st" + n, { opacity: 0.6, duration: 0.3 }, t); tl.to("#s07-st" + n + " .s07-hl", { opacity: 0, duration: 0.3 }, t); };
+      // 1 access
+      on(1, 15.6);
+      tl.fromTo("#s07-cam", { scale: 1 }, { scale: 1.15, duration: 0.4, yoyo: true, repeat: 3, ease: "power1.inOut" }, 16.0);
+      off(1, 21.6);
+      // 2 read
+      on(2, 21.8);
+      tl.fromTo("#s07-q", { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 22.0);
+      tl.fromTo("#s07-hud", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 22.4);
+      ["#s07-b1", "#s07-b2", "#s07-b3"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(2.4)" }, 23.4 + i * 0.4));
+      tl.fromTo(".s07-b", { y: 0 }, { y: -12, duration: 1.4, yoyo: true, repeat: 15, ease: "sine.inOut" }, 24.6);
+      off(2, 29.2);
+      // 3 identify
+      on(3, 29.4);
+      tl.fromTo("#s07-q .s07-bad", { scale: 1 }, { scale: 1.2, duration: 0.3, yoyo: true, repeat: 1 }, 30.0);
+      tl.fromTo("#s07-q .s07-bad i", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.out" }, 30.8);
+      off(3, 36.8);
+      // 4 lock & shoot
+      on(4, 37.0);
+      tl.fromTo("#s07-gesture", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, 37.2);
+      tl.fromTo("#s07-cross", { opacity: 0, x: 690, y: 30 }, { opacity: 1, x: 690, y: 30, duration: 0.4 }, 38.0);
+      tl.to("#s07-cross", { x: 350, y: 10, duration: 1.0, ease: "power2.inOut" }, 38.6);
+      tl.to("#s07-cross", { x: 0, y: 0, duration: 1.0, ease: "power2.inOut" }, 39.8);
+      tl.fromTo("#s07-lockring", { strokeDashoffset: 703.7 }, { strokeDashoffset: 0, duration: 1.2, ease: "none" }, 41.0);
+      tl.fromTo("#s07-b1", { boxShadow: "0 0 40px rgba(255,255,255,.7)" }, { boxShadow: "0 0 60px 12px rgba(255,216,77,.95)", duration: 0.3 }, 42.2);
+      tl.fromTo("#s07-g2", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 43.2);
+      tl.set("#s07-burst", { opacity: 1, scale: 0.6 }, 45.0);
+      tl.to("#s07-burst", { scale: 2.4, opacity: 0, duration: 0.6, ease: "power2.out" }, 45.0);
+      tl.to("#s07-b1", { scale: 1.15, duration: 0.15, yoyo: true, repeat: 1 }, 45.0);
+      tl.to("#s07-b2, #s07-b3", { opacity: 0.25, duration: 0.4 }, 45.2);
+      tl.to("#s07-cross", { opacity: 0, duration: 0.3 }, 45.6);
+      off(4, 48.6);
+      // 5 feedback
+      on(5, 48.8);
+      tl.fromTo("#s07-ok", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(2.5)" }, 49.0);
+      const sc = { s: 0 };
+      tl.fromTo(sc, { s: 0 }, { s: 100, duration: 1.0, ease: "power2.out", onUpdate: () => (document.getElementById("s07-score").textContent = Math.round(sc.s)) }, 49.2);
+      const cb = { c: 0 };
+      tl.fromTo(cb, { c: 0 }, { c: 1, duration: 0.1, onUpdate: () => (document.getElementById("s07-combo").textContent = Math.round(cb.c)) }, 49.6);
+      tl.fromTo("#s07-fixed", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 50.6);
+      tl.to("#s07-play > *", { opacity: 0, duration: 0.5 }, 57.9);
+
+      tl.fromTo("#s07-foot-move", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 58.4);
+      tl.fromTo("#s07-foot-move", { scale: 1.0 }, { scale: 1.06, duration: 13.6, ease: "none", immediateRender: false }, 58.4);
+      tl.fromTo("#s07-foot-text", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 59.4);
+      tl.fromTo("#s07-fade", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.in" }, 71.3);
+      tl.set("#s07-play", { opacity: 0 }, 0); tl.set("#s07-play", { opacity: 1 }, 14); tl.set("#s07-play", { opacity: 0 }, 58.4);
+      tl.set("#s07-foot", { opacity: 0 }, 0); tl.set("#s07-foot", { opacity: 1 }, 58.4); tl.set("#s07-foot", { opacity: 0 }, 72.0);
+      window.__timelines["s07"] = tl;
+    })();
+  </script>
+</template>

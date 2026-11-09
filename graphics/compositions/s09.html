@@ -1,0 +1,125 @@
+<template>
+  <style>
+    @font-face { font-family: DocDisplay; src: url("assets/fonts/montserrat-latin-800-normal.woff2"); font-weight: 800; }
+    @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-400-normal.woff2"); font-weight: 400; }
+    @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-600-normal.woff2"); font-weight: 600; }
+    @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-500-normal.woff2"); font-weight: 500; }
+    @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-700-normal.woff2"); font-weight: 700; }
+    #root { position: absolute; inset: 0; overflow: hidden; color: #0c1d45; font-family: DocBody, sans-serif;
+      background: linear-gradient(135deg, #f6f9ff 0%, #e6efff 60%, #d8e6ff 100%); }
+    .s09-mono { font-family: DocMono, monospace; font-weight: 700; letter-spacing: .28em; text-transform: uppercase; color: #1e6bff; }
+    #s09-dots { position: absolute; inset: 0; opacity: .5; background-image: radial-gradient(rgba(30,107,255,.25) 1.5px, transparent 1.5px); background-size: 36px 36px; }
+    #s09-band { position: absolute; left: 0; top: 0; bottom: 0; width: 16px; background: linear-gradient(#1e6bff, #7cc4ff); transform-origin: top; }
+    /* chapter */
+    #s09-chap { position: absolute; inset: 0; }
+    #s09-num { position: absolute; left: 150px; top: 250px; font-family: DocDisplay; font-weight: 800; font-size: 260px; line-height: 1; color: transparent; -webkit-text-stroke: 3px #1e6bff; }
+    #s09-chap-tag { position: absolute; left: 160px; top: 560px; font-size: 24px; }
+    #s09-chap-title { position: absolute; left: 150px; top: 610px; width: 1200px; font-family: DocDisplay; font-weight: 800; font-size: 96px; line-height: 1.02; letter-spacing: -.02em; }
+    #s09-chap-sub { position: absolute; left: 160px; top: 820px; font-size: 30px; color: #3b4f78; }
+    #s09-check-big { position: absolute; right: 260px; top: 300px; width: 420px; height: 420px; }
+    #s09-check-big circle { fill: none; stroke: #1e6bff; stroke-width: 10; }
+    #s09-check-big path { fill: none; stroke: #f5a623; stroke-width: 16; stroke-linecap: round; stroke-linejoin: round; }
+    /* learned */
+    #s09-learn { position: absolute; inset: 0; }
+    #s09-learn .s09-mono.s09-h { position: absolute; left: 160px; top: 130px; font-size: 22px; }
+    #s09-learn h2 { position: absolute; left: 160px; top: 170px; font-family: DocDisplay; font-weight: 800; font-size: 68px; }
+    .s09-row { position: absolute; left: 160px; width: 1600px; display: flex; gap: 34px; align-items: flex-start; padding: 30px 40px; border-radius: 22px;
+      background: #fff; box-shadow: 0 16px 40px rgba(12,29,69,.10); border: 1px solid #d6e2fb; }
+    .s09-row svg { flex: none; width: 70px; height: 70px; }
+    .s09-row svg circle { fill: #1e6bff; }
+    .s09-row svg path { fill: none; stroke: #fff; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+    .s09-row h3 { font-family: DocDisplay; font-weight: 800; font-size: 40px; margin-bottom: 10px; }
+    .s09-row p { font-size: 29px; color: #3b4f78; }
+    .s09-row p em { font-style: normal; font-weight: 600; color: #1e6bff; }
+    /* ticket */
+    #s09-ticket-wrap { position: absolute; inset: 0; }
+    #s09-ticket-wrap .s09-mono.s09-h { position: absolute; left: 0; right: 0; top: 120px; text-align: center; font-size: 22px; }
+    #s09-ticket-wrap h2 { position: absolute; left: 0; right: 0; top: 160px; text-align: center; font-family: DocDisplay; font-weight: 800; font-size: 66px; }
+    #s09-ticket { position: absolute; left: 330px; top: 300px; width: 1260px; height: 560px; display: flex; border-radius: 28px; overflow: hidden; box-shadow: 0 30px 70px rgba(12,29,69,.22); }
+    #s09-stub { width: 300px; background: #1e6bff; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 6px dashed #d8e6ff; }
+    #s09-stub b { font-family: DocDisplay; font-weight: 800; font-size: 46px; writing-mode: vertical-rl; transform: rotate(180deg); letter-spacing: .08em; }
+    #s09-main { flex: 1; background: #fff; padding: 50px 60px; }
+    #s09-main .s09-mono { font-size: 18px; }
+    .s09-fn { display: flex; gap: 26px; margin-top: 34px; }
+    .s09-fn b { flex: none; width: 150px; padding: 10px 0; border-radius: 12px; text-align: center; font-family: DocMono; font-weight: 700; font-size: 20px; letter-spacing: .15em; background: #f5c451; color: #0c1d45; height: fit-content; }
+    .s09-fn p { font-size: 32px; line-height: 1.35; font-weight: 600; }
+    .s09-fn p small { display: block; font-size: 25px; font-weight: 400; color: #3b4f78; margin-top: 6px; }
+    #s09-fade { position: absolute; inset: 0; background: #071229; }
+  </style>
+  <div id="root" data-composition-id="s09" data-width="1920" data-height="1080">
+    <div id="s09-dots"></div>
+    <div id="s09-band"></div>
+
+    <div id="s09-chap" class="clip" data-start="0" data-duration="5.6">
+      <svg id="s09-check-big" viewBox="0 0 200 200"><circle id="s09-cb-c" cx="100" cy="100" r="88" /><path id="s09-cb-p" d="M58 104 L88 134 L146 70" /></svg>
+      <div id="s09-num">09</div>
+      <div id="s09-chap-tag" class="s09-mono">Penerangan</div>
+      <div id="s09-chap-title">Rumusan &amp; Tiket Refleksi</div>
+      <div id="s09-chap-sub">Menyusun semula apa yang telah dipelajari</div>
+    </div>
+
+    <div id="s09-learn" class="clip" data-start="5.2" data-duration="24.8">
+      <div class="s09-mono s09-h">Rumusan pembelajaran</div>
+      <h2>Apa yang telah dipelajari?</h2>
+      <div class="s09-row" id="s09-r1" style="top:310px">
+        <svg viewBox="0 0 70 70"><circle cx="35" cy="35" r="35" /><path d="M20 36 L31 47 L51 25" /></svg>
+        <div><h3>Kata nama khas bermula dengan huruf besar</h3><p><em>Menara Berkembar Petronas</em> · <em>Kuala Lumpur</em> · <em>Sang Kancil</em></p></div>
+      </div>
+      <div class="s09-row" id="s09-r2" style="top:540px">
+        <svg viewBox="0 0 70 70"><circle cx="35" cy="35" r="35" /><path d="M20 36 L31 47 L51 25" /></svg>
+        <div><h3>Kata ganti nama yang sesuai</h3><p>patik → <em>saya</em> · beliau (untuk ibu) → <em>dia</em></p></div>
+      </div>
+      <div class="s09-row" id="s09-r3" style="top:770px">
+        <svg viewBox="0 0 70 70"><circle cx="35" cy="35" r="35" /><path d="M20 36 L31 47 L51 25" /></svg>
+        <div><h3>Penjodoh bilangan yang tepat</h3><p><em>sebuah</em> kerusi · <em>sesikat</em> pisang · lima <em>ekor</em> ikan · dua <em>pasang</em> kasut</p></div>
+      </div>
+    </div>
+
+    <div id="s09-ticket-wrap" class="clip" data-start="30" data-duration="22">
+      <div class="s09-mono s09-h">Penutup pengajaran</div>
+      <h2>Fungsi Tiket Refleksi</h2>
+      <div id="s09-ticket">
+        <div id="s09-stub"><b>TIKET REFLEKSI</b></div>
+        <div id="s09-main">
+          <div class="s09-mono">Dua fungsi utama</div>
+          <div class="s09-fn" id="s09-f1"><b>MURID</b><p>Menilai pembelajaran sendiri<small>Apa yang difahami dan apa yang masih kurang jelas.</small></p></div>
+          <div class="s09-fn" id="s09-f2"><b>GURU</b><p>Pentaksiran formatif<small>Mengenal pasti murid yang perlu bimbingan dan menambah baik PdP akan datang.</small></p></div>
+        </div>
+      </div>
+    </div>
+    <div id="s09-fade" class="clip" data-start="51.3" data-duration="0.7"></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s09-band", { scaleY: 0 }, { scaleY: 1, duration: 1.0, ease: "power3.inOut" }, 0.1);
+      tl.fromTo("#s09-dots", { backgroundPosition: "0px 0px" }, { backgroundPosition: "72px 36px", duration: 52, ease: "none" }, 0);
+      const c = document.getElementById("s09-cb-c"), p = document.getElementById("s09-cb-p");
+      c.style.strokeDasharray = "553 560"; p.style.strokeDasharray = "140 150";
+      tl.fromTo(c, { strokeDashoffset: 553 }, { strokeDashoffset: 0, duration: 1.2, ease: "power2.inOut" }, 0.3);
+      tl.fromTo(p, { strokeDashoffset: 140 }, { strokeDashoffset: 0, duration: 0.6, ease: "power2.out" }, 1.4);
+      tl.fromTo("#s09-num", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 1.0, ease: "power3.out" }, 0.4);
+      tl.fromTo("#s09-chap-tag", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 1.0);
+      tl.fromTo("#s09-chap-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: "power4.out" }, 1.2);
+      tl.fromTo("#s09-chap-sub", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7 }, 2.0);
+      tl.to("#s09-chap > *", { opacity: 0, duration: 0.5, ease: "power2.in" }, 4.9);
+
+      tl.fromTo("#s09-learn .s09-h", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 5.4);
+      tl.fromTo("#s09-learn h2", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 5.6);
+      ["#s09-r1", "#s09-r2", "#s09-r3"].forEach((id, i) => {
+        const t = 7.4 + i * 6.4;
+        tl.fromTo(id, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, t);
+        tl.fromTo(id + " svg", { scale: 0, rotation: -90 }, { scale: 1, rotation: 0, duration: 0.6, ease: "back.out(2.2)" }, t + 0.4);
+      });
+      tl.to("#s09-learn > *", { opacity: 0, duration: 0.5 }, 29.5);
+
+      tl.fromTo("#s09-ticket-wrap .s09-h", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 30.2);
+      tl.fromTo("#s09-ticket-wrap h2", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 30.4);
+      tl.fromTo("#s09-ticket", { opacity: 0, y: 80, rotation: -3 }, { opacity: 1, y: 0, rotation: 0, duration: 1.0, ease: "power3.out" }, 31.4);
+      tl.fromTo("#s09-f1", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 33.6);
+      tl.fromTo("#s09-f2", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 39.6);
+      tl.fromTo("#s09-fade", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.in" }, 51.3);
+      window.__timelines["s09"] = tl;
+    })();
+  </script>
+</template>

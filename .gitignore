@@ -1,2 +1,9 @@
 node_modules/
 footage/
+graphics/assets/broll/
+overlays/renders/
+output/
+.hyperframes/
+graphics/renders/
+overlays/batch.json.bak
+.transcode-cache/

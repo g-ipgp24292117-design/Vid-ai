@@ -1,0 +1,191 @@
+<template>
+  <style>
+    @font-face { font-family: DocDisplay; src: url("assets/fonts/montserrat-latin-800-normal.woff2"); font-weight: 800; }
+    @font-face { font-family: DocDisplay; src: url("assets/fonts/montserrat-latin-600-normal.woff2"); font-weight: 600; }
+    @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-400-normal.woff2"); font-weight: 400; }
+    @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-600-normal.woff2"); font-weight: 600; }
+    @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-500-normal.woff2"); font-weight: 500; }
+    @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-700-normal.woff2"); font-weight: 700; }
+    #root { position: absolute; inset: 0; overflow: hidden; color: #fff; font-family: DocBody, sans-serif;
+      background: radial-gradient(1200px 700px at 70% 30%, #12306e 0%, #0c1d45 38%, #071229 75%); }
+    #s01-grid { position: absolute; inset: -60px; opacity: .18;
+      background-image: linear-gradient(rgba(124,196,255,.35) 1px, transparent 1px), linear-gradient(90deg, rgba(124,196,255,.35) 1px, transparent 1px);
+      background-size: 96px 96px; }
+    #s01-particles { position: absolute; inset: 0; }
+    #s01-particles i { position: absolute; border-radius: 50%; background: #7cc4ff; box-shadow: 0 0 8px #7cc4ff; }
+    .s01-mono { font-family: DocMono, monospace; font-weight: 500; letter-spacing: .32em; text-transform: uppercase; color: #7cc4ff; }
+    /* Opening */
+    #s01-open { position: absolute; inset: 0; }
+    #s01-line { position: absolute; left: 260px; right: 260px; top: 539px; height: 2px;
+      background: linear-gradient(90deg, transparent, #7cc4ff 20%, #fff 50%, #7cc4ff 80%, transparent); }
+    #s01-tag { position: absolute; left: 0; right: 0; top: 572px; text-align: center; font-size: 24px; }
+    #s01-dot { position: absolute; left: 954px; top: 533px; width: 14px; height: 14px; border-radius: 50%; background: #f5c451; box-shadow: 0 0 24px #f5c451; }
+    /* Title */
+    #s01-title { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .s01-row { overflow: hidden; padding: 6px 30px; }
+    .s01-row span { display: inline-block; }
+    #s01-t1 { font-family: DocDisplay; font-weight: 800; font-size: 112px; letter-spacing: -.02em; line-height: 1.05; }
+    #s01-t2 { font-family: DocDisplay; font-weight: 800; font-size: 112px; letter-spacing: -.02em; line-height: 1.05;
+      background: linear-gradient(90deg, #f5c451, #ffe6a3 50%, #f5c451); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    #s01-sub { margin-top: 34px; font-size: 34px; font-weight: 600; color: #cfe6ff; }
+    #s01-subtag { margin-top: 22px; font-size: 22px; }
+    /* Presenter */
+    #s01-frame { position: absolute; left: 820px; top: 150px; width: 1000px; height: 562px; border-radius: 22px; overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(124,196,255,.45); }
+    #s01-frame-inner { position: absolute; inset: 0; }
+    #s01-frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    #s01-frame-tag { position: absolute; left: 820px; top: 730px; font-size: 18px; }
+    #s01-name { position: absolute; left: 110px; top: 330px; width: 660px; }
+    #s01-name .s01-mono { font-size: 20px; }
+    #s01-name-text { font-family: DocDisplay; font-weight: 800; font-size: 82px; line-height: 1.02; margin-top: 18px; }
+    #s01-name-rule { height: 4px; width: 420px; margin: 26px 0 22px; background: linear-gradient(90deg, #f5c451, rgba(245,196,81,0)); transform-origin: left center; }
+    #s01-role { font-size: 36px; font-weight: 600; color: #cfe6ff; }
+    #s01-role2 { margin-top: 12px; font-size: 26px; color: #9fb7da; }
+    /* Info panel */
+    #s01-info { position: absolute; left: 110px; top: 190px; width: 660px; }
+    #s01-info h2 { font-family: DocDisplay; font-weight: 800; font-size: 52px; margin: 16px 0 34px; }
+    .s01-card { position: relative; margin-bottom: 18px; padding: 20px 26px; border-radius: 16px;
+      background: rgba(15, 30, 70, .72); border: 1px solid rgba(124,196,255,.35); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
+    .s01-card b { display: block; font-family: DocMono; font-weight: 700; font-size: 16px; letter-spacing: .26em; color: #f5c451; margin-bottom: 8px; }
+    .s01-card p { font-size: 27px; font-weight: 600; line-height: 1.3; }
+    /* Flow */
+    #s01-flow { position: absolute; inset: 0; }
+    #s01-flow h2 { position: absolute; left: 0; right: 0; top: 250px; text-align: center; font-family: DocDisplay; font-weight: 800; font-size: 60px; }
+    #s01-flow .s01-mono { position: absolute; left: 0; right: 0; top: 210px; text-align: center; font-size: 20px; }
+    #s01-track { position: absolute; left: 240px; width: 1440px; top: 560px; height: 4px; background: rgba(124,196,255,.25); }
+    #s01-track-fill { position: absolute; inset: 0; background: linear-gradient(90deg, #1e6bff, #7cc4ff); transform-origin: left center; }
+    .s01-node { position: absolute; top: 520px; width: 300px; margin-left: -150px; text-align: center; }
+    .s01-node .s01-ring { width: 84px; height: 84px; margin: 0 auto; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      background: #0c1d45; border: 3px solid #7cc4ff; font-family: DocDisplay; font-weight: 800; font-size: 32px; box-shadow: 0 0 30px rgba(30,107,255,.6); }
+    .s01-node p { margin-top: 26px; font-size: 26px; font-weight: 600; line-height: 1.25; }
+    #s01-pulse { position: absolute; top: 549px; left: 240px; width: 26px; height: 26px; margin-left: -13px; border-radius: 50%; background: #fff; box-shadow: 0 0 30px 10px #7cc4ff; }
+    #s01-fade { position: absolute; inset: 0; background: #071229; }
+  </style>
+  <div id="root" data-composition-id="s01" data-width="1920" data-height="1080">
+    <div id="s01-grid"></div>
+    <div id="s01-particles"></div>
+
+    <div id="s01-open" class="clip" data-start="0" data-duration="5.6">
+      <div id="s01-line"></div>
+      <div id="s01-dot"></div>
+      <div id="s01-tag" class="s01-mono">Dokumentasi Pengajaran &amp; Pembelajaran</div>
+    </div>
+
+    <div id="s01-title" class="clip" data-start="3.6" data-duration="9.6">
+      <div class="s01-row"><span id="s01-t1">Dari Mercu Tanda</span></div>
+      <div class="s01-row"><span id="s01-t2">ke Misi Tembak Kata</span></div>
+      <div id="s01-sub">Pengajaran Bahasa Melayu melalui permainan dan Augmented Reality</div>
+      <div id="s01-subtag" class="s01-mono">Sebuah dokumentari inovasi pendidikan</div>
+    </div>
+
+    <div id="s01-frame">
+      <div id="s01-frame-inner">
+        <video id="s01-v1" class="clip" src="assets/broll/class.mp4" data-start="13" data-duration="16" muted playsinline></video>
+        <video id="s01-v2" class="clip" src="assets/broll/hands.mp4" data-start="29" data-duration="17.4" muted playsinline></video>
+      </div>
+    </div>
+    <div id="s01-frame-tag" class="s01-mono clip" data-start="13.6" data-duration="32.6">● Rakaman sebenar bilik darjah</div>
+
+    <div id="s01-name" class="clip" data-start="13.4" data-duration="16.2">
+      <div class="s01-mono">Pengajar</div>
+      <div id="s01-name-text" data-var-text="teacher_name">Guru Pelatih</div>
+      <div id="s01-name-rule"></div>
+      <div id="s01-role" data-var-text="teacher_role">Bahasa Melayu</div>
+      <div id="s01-role2">Pengajaran dan pembelajaran berteraskan mercu tanda negara</div>
+    </div>
+
+    <div id="s01-info" class="clip" data-start="30" data-duration="16.4">
+      <div class="s01-mono">Maklumat pengajaran</div>
+      <h2>Fokus Pembelajaran</h2>
+      <div class="s01-card" id="s01-c1"><b>MATA PELAJARAN</b><p>Bahasa Melayu</p></div>
+      <div class="s01-card" id="s01-c2"><b>TEMA</b><p>Mercu Tanda Negara</p></div>
+      <div class="s01-card" id="s01-c3"><b>OBJEKTIF</b><p>Mengenal pasti dan membetulkan kesalahan ayat</p></div>
+      <div class="s01-card" id="s01-c4"><b>ASPEK BAHASA</b><p>Kata nama khas · Kata ganti nama · Penjodoh bilangan</p></div>
+    </div>
+
+    <div id="s01-flow" class="clip" data-start="46.4" data-duration="13.6">
+      <div class="s01-mono">Aliran pengajaran</div>
+      <h2>Lima Langkah Satu Misi</h2>
+      <div id="s01-track"><div id="s01-track-fill"></div></div>
+      <div id="s01-pulse"></div>
+      <div class="s01-node" id="s01-n1" style="left:240px"><div class="s01-ring">1</div><p>Set Induksi</p></div>
+      <div class="s01-node" id="s01-n2" style="left:600px"><div class="s01-ring">2</div><p>Sorok Kad<br />Mercu Tanda</p></div>
+      <div class="s01-node" id="s01-n3" style="left:960px"><div class="s01-ring">3</div><p>Teknologi AR</p></div>
+      <div class="s01-node" id="s01-n4" style="left:1320px"><div class="s01-ring">4</div><p>Misi<br />Tembak Kata</p></div>
+      <div class="s01-node" id="s01-n5" style="left:1680px"><div class="s01-ring">5</div><p>Rumusan &amp;<br />Refleksi</p></div>
+    </div>
+
+    <div id="s01-fade" class="clip" data-start="59.3" data-duration="0.7"></div>
+  </div>
+  <script>
+    (function () {
+      // Seeded decorative particles (deterministic).
+      let seed = 11;
+      const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      const host = document.getElementById("s01-particles");
+      const dots = [];
+      for (let i = 0; i < 46; i++) {
+        const d = document.createElement("i");
+        const s = 2 + rnd() * 4;
+        d.style.width = d.style.height = s + "px";
+        d.style.left = rnd() * 1920 + "px";
+        d.style.top = rnd() * 1080 + "px";
+        d.style.opacity = (0.15 + rnd() * 0.5).toFixed(2);
+        host.appendChild(d);
+        dots.push({ d, dy: -(30 + rnd() * 90), dx: (rnd() - 0.5) * 40 });
+      }
+      const vars = (window.__hyperframes && window.__hyperframes.getVariables && window.__hyperframes.getVariables()) || {};
+      if (vars.teacher_name) document.getElementById("s01-name-text").textContent = vars.teacher_name;
+      if (vars.teacher_role) document.getElementById("s01-role").textContent = vars.teacher_role;
+
+      const tl = gsap.timeline({ paused: true });
+      dots.forEach((p) => tl.fromTo(p.d, { x: 0, y: 0 }, { x: p.dx, y: p.dy, duration: 60, ease: "none" }, 0));
+      tl.fromTo("#s01-grid", { x: 0, y: 0 }, { x: -48, y: -96, duration: 60, ease: "none" }, 0);
+
+      // Opening: light line + tag
+      tl.fromTo("#s01-line", { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 1.4, ease: "power3.inOut" }, 0.3);
+      tl.fromTo("#s01-dot", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(2)" }, 1.4);
+      tl.fromTo("#s01-tag", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 1.4, ease: "power2.out" }, 1.5);
+      tl.to("#s01-open", { opacity: 0, duration: 0.6, ease: "power2.in" }, 4.9);
+
+      // Title
+      tl.fromTo("#s01-t1", { yPercent: 110 }, { yPercent: 0, duration: 1.0, ease: "power4.out" }, 3.8);
+      tl.fromTo("#s01-t2", { yPercent: 110 }, { yPercent: 0, duration: 1.0, ease: "power4.out" }, 4.25);
+      tl.fromTo("#s01-sub", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" }, 5.4);
+      tl.fromTo("#s01-subtag", { opacity: 0 }, { opacity: 1, duration: 0.9, ease: "power2.out" }, 6.2);
+      tl.fromTo("#s01-title", { scale: 1 }, { scale: 1.04, duration: 9.6, ease: "none" }, 3.6);
+      tl.to("#s01-title", { opacity: 0, filter: "blur(10px)", duration: 0.6, ease: "power2.in" }, 12.5);
+
+      // Presenter block
+      tl.fromTo("#s01-frame", { opacity: 0, x: 80, scale: 0.96 }, { opacity: 1, x: 0, scale: 1, duration: 1.0, ease: "power3.out" }, 13);
+      tl.fromTo("#s01-frame-inner", { scale: 1.0 }, { scale: 1.08, duration: 33.4, ease: "none" }, 13);
+      tl.fromTo("#s01-frame-tag", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 14);
+      tl.fromTo("#s01-name .s01-mono", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" }, 13.6);
+      tl.fromTo("#s01-name-text", { opacity: 0, y: 40, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.9, ease: "power3.out" }, 14.0);
+      tl.fromTo("#s01-name-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "power3.inOut" }, 14.8);
+      tl.fromTo("#s01-role", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, 15.4);
+      tl.fromTo("#s01-role2", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, 16.2);
+      tl.to("#s01-name", { opacity: 0, x: -40, duration: 0.5, ease: "power2.in" }, 29.0);
+
+      // Info cards, one at a time
+      tl.fromTo("#s01-info .s01-mono", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 30.2);
+      tl.fromTo("#s01-info h2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, 30.4);
+      ["#s01-c1", "#s01-c2", "#s01-c3", "#s01-c4"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 31.6 + i * 3.0));
+      tl.to("#s01-info", { opacity: 0, y: -20, duration: 0.5, ease: "power2.in" }, 45.8);
+      tl.to("#s01-frame, #s01-frame-tag", { opacity: 0, x: 60, duration: 0.6, ease: "power2.in" }, 45.7);
+
+      // Flow
+      tl.fromTo("#s01-flow .s01-mono", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 46.6);
+      tl.fromTo("#s01-flow h2", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 46.8);
+      tl.fromTo("#s01-track-fill", { scaleX: 0 }, { scaleX: 1, duration: 6.4, ease: "power1.inOut" }, 47.6);
+      ["#s01-n1", "#s01-n2", "#s01-n3", "#s01-n4", "#s01-n5"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "back.out(1.6)" }, 47.6 + i * 1.6));
+      tl.fromTo("#s01-pulse", { x: 0, opacity: 0 }, { x: 1440, opacity: 1, duration: 6.4, ease: "power1.inOut" }, 47.6);
+      tl.to("#s01-pulse", { opacity: 0, duration: 0.4 }, 54.2);
+      tl.fromTo("#s01-fade", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.in" }, 59.3);
+      tl.set("#s01-frame", { opacity: 0 }, 46.4);
+      window.__timelines["s01"] = tl;
+    })();
+  </script>
+</template>

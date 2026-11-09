@@ -1,0 +1,208 @@
+<template>
+  <style>
+    @font-face { font-family: DocDisplay; src: url("assets/fonts/montserrat-latin-800-normal.woff2"); font-weight: 800; }
+    @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-400-normal.woff2"); font-weight: 400; }
+    @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-600-normal.woff2"); font-weight: 600; }
+    @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-500-normal.woff2"); font-weight: 500; }
+    @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-700-normal.woff2"); font-weight: 700; }
+    #root { position: absolute; inset: 0; overflow: hidden; color: #fff; font-family: DocBody, sans-serif;
+      background: radial-gradient(1200px 800px at 80% 20%, #1b3a6e 0%, #0c1d45 45%, #071229 85%); }
+    .s04-mono { font-family: DocMono, monospace; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: #f5c451; }
+    #s04-topo { position: absolute; inset: 0; opacity: .14;
+      background: repeating-radial-gradient(circle at 30% 60%, transparent 0 38px, rgba(245,196,81,.7) 39px 40px); }
+    /* chapter */
+    #s04-chap { position: absolute; inset: 0; }
+    #s04-compass { position: absolute; right: 250px; top: 250px; width: 520px; height: 520px; }
+    #s04-compass circle, #s04-compass path { fill: none; stroke: #f5c451; stroke-width: 2; }
+    #s04-needle { fill: #f5c451 !important; stroke: none !important; }
+    #s04-num { position: absolute; left: 150px; top: 250px; font-family: DocDisplay; font-weight: 800; font-size: 260px; line-height: 1; color: transparent; -webkit-text-stroke: 3px rgba(245,196,81,.9); }
+    #s04-chap-tag { position: absolute; left: 160px; top: 560px; font-size: 24px; }
+    #s04-chap-title { position: absolute; left: 150px; top: 610px; width: 1000px; font-family: DocDisplay; font-weight: 800; font-size: 88px; line-height: 1.02; letter-spacing: -.02em; }
+    #s04-chap-sub { position: absolute; left: 160px; top: 820px; font-size: 30px; color: #e8d9b0; }
+    /* map + rules */
+    #s04-plan { position: absolute; inset: 0; }
+    #s04-map { position: absolute; left: 110px; top: 200px; width: 820px; height: 640px; border-radius: 26px; overflow: hidden;
+      background: rgba(10, 24, 58, .85); border: 1px solid rgba(245,196,81,.45); box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+    #s04-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    #s04-map .s04-gridl { stroke: rgba(124,196,255,.12); stroke-width: 1; }
+    #s04-route { fill: none; stroke: #f5c451; stroke-width: 5; stroke-linecap: round; filter: drop-shadow(0 0 8px rgba(245,196,81,.7)); }
+    .s04-q { font-family: DocDisplay; font-weight: 800; font-size: 34px; fill: #7cc4ff; }
+    .s04-qc { fill: rgba(30,107,255,.25); stroke: #7cc4ff; stroke-width: 2; }
+    #s04-flag text { font-family: DocMono; font-weight: 700; font-size: 22px; fill: #071229; letter-spacing: 2px; }
+    #s04-map-tag { position: absolute; left: 136px; top: 860px; font-size: 18px; color: #9fb7da; }
+    #s04-plan h2 { position: absolute; left: 1010px; top: 200px; font-family: DocDisplay; font-weight: 800; font-size: 60px; line-height: 1.05; width: 820px; }
+    #s04-plan .s04-mono.s04-h { position: absolute; left: 1012px; top: 160px; font-size: 20px; }
+    .s04-rule { position: absolute; left: 1010px; width: 800px; display: flex; gap: 26px; }
+    .s04-rule b { flex: none; width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
+      background: #f5c451; color: #071229; font-family: DocDisplay; font-weight: 800; font-size: 32px; }
+    .s04-rule p { font-size: 32px; line-height: 1.35; font-weight: 600; padding-top: 8px; }
+    /* footage */
+    #s04-foot { position: absolute; inset: 0; }
+    #s04-foot-move { position: absolute; inset: 0; }
+    #s04-foot video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .s04-corner { position: absolute; width: 70px; height: 70px; border-color: #f5c451; border-style: solid; }
+    #s04-cardpip { position: absolute; right: 90px; bottom: 90px; width: 560px; height: 315px; border-radius: 18px; overflow: hidden; box-shadow: 0 0 0 3px #f5c451, 0 20px 60px rgba(0,0,0,.6); }
+    #s04-cardpip video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    #s04-foot-label { position: absolute; left: 90px; top: 70px; padding: 16px 26px; border-radius: 14px; background: rgba(7,18,41,.82); border: 1px solid rgba(245,196,81,.6); }
+    #s04-foot-label .s04-mono { font-size: 16px; }
+    #s04-foot-label p { margin-top: 6px; font-size: 30px; font-weight: 600; }
+    #s04-found { position: absolute; right: 90px; bottom: 420px; width: 560px; padding: 16px 24px; border-radius: 14px; background: rgba(7,18,41,.85); border: 1px solid rgba(245,196,81,.6); font-size: 26px; font-weight: 600; }
+    /* task */
+    #s04-task { position: absolute; inset: 0; }
+    #s04-task .s04-mono.s04-h { position: absolute; left: 0; right: 0; top: 140px; text-align: center; font-size: 22px; }
+    #s04-task h2 { position: absolute; left: 0; right: 0; top: 180px; text-align: center; font-family: DocDisplay; font-weight: 800; font-size: 64px; }
+    #s04-steps { position: absolute; left: 160px; right: 160px; top: 320px; display: flex; justify-content: space-between; align-items: center; }
+    .s04-step { width: 430px; padding: 30px 28px; border-radius: 20px; text-align: center; background: rgba(15,30,70,.8); border: 1px solid rgba(124,196,255,.4); }
+    .s04-step small { display: block; font-family: DocMono; font-weight: 700; font-size: 18px; letter-spacing: .25em; color: #f5c451; margin-bottom: 10px; }
+    .s04-step span { font-family: DocDisplay; font-weight: 800; font-size: 38px; }
+    .s04-arr { width: 60px; height: 4px; background: #f5c451; position: relative; }
+    .s04-arr::after { content: ""; position: absolute; right: -4px; top: -8px; border-left: 16px solid #f5c451; border-top: 10px solid transparent; border-bottom: 10px solid transparent; }
+    #s04-example { position: absolute; left: 260px; right: 260px; top: 560px; padding: 40px 56px; border-radius: 26px; background: rgba(255,255,255,.96); color: #0c1d45; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+    #s04-example .s04-mono { color: #1e6bff; font-size: 18px; }
+    #s04-ex-line { margin-top: 18px; font-family: DocDisplay; font-weight: 800; font-size: 76px; letter-spacing: -.01em; }
+    #s04-ex-line .s04-cap { display: inline-block; color: #1e6bff; position: relative; isolation: isolate; }
+    #s04-ex-line .s04-cap i { position: absolute; left: -8px; right: -8px; bottom: 2px; height: 14px; background: rgba(245,196,81,.75); z-index: -1; transform-origin: left; }
+    #s04-ex-note { margin-top: 16px; font-size: 30px; font-weight: 600; color: #33415c; }
+    /* closing footage */
+    #s04-read { position: absolute; inset: 0; }
+    #s04-read-move { position: absolute; inset: 0; }
+    #s04-read video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    #s04-read-band { position: absolute; left: 0; right: 0; bottom: 0; height: 300px; background: linear-gradient(transparent, rgba(5,12,29,.92)); }
+    #s04-read-text { position: absolute; left: 110px; bottom: 80px; width: 1400px; }
+    #s04-read-text .s04-mono { font-size: 18px; }
+    #s04-read-text p { margin-top: 10px; font-size: 40px; font-weight: 600; line-height: 1.3; }
+    #s04-fade { position: absolute; inset: 0; background: #071229; }
+  </style>
+  <div id="root" data-composition-id="s04" data-width="1920" data-height="1080">
+    <div id="s04-topo"></div>
+
+    <div id="s04-chap" class="clip" data-start="0" data-duration="6">
+      <svg id="s04-compass" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="90" /><circle cx="100" cy="100" r="70" stroke-dasharray="4 6" />
+        <path d="M100 4 L100 26 M100 174 L100 196 M4 100 L26 100 M174 100 L196 100" />
+        <path id="s04-needle" d="M100 30 L112 100 L100 170 L88 100 Z" />
+      </svg>
+      <div id="s04-num">04</div>
+      <div id="s04-chap-tag" class="s04-mono">Penerangan</div>
+      <div id="s04-chap-title">Aktiviti Sorok Kad Mercu Tanda</div>
+      <div id="s04-chap-sub">Misi mencari, membaca dan membetulkan</div>
+    </div>
+
+    <div id="s04-plan" class="clip" data-start="5.6" data-duration="12.4">
+      <div id="s04-map">
+        <svg viewBox="0 0 820 640">
+          <g id="s04-grid"></g>
+          <path id="s04-route" d="M70 560 C 180 470, 120 360, 260 350 S 420 420, 470 300 S 560 140, 720 130" />
+          <g id="s04-q1"><circle class="s04-qc" cx="260" cy="350" r="34" /><text class="s04-q" x="249" y="362">?</text></g>
+          <g id="s04-q2"><circle class="s04-qc" cx="470" cy="300" r="34" /><text class="s04-q" x="459" y="312">?</text></g>
+          <g id="s04-q3"><circle class="s04-qc" cx="610" cy="470" r="34" /><text class="s04-q" x="599" y="482">?</text></g>
+          <g id="s04-flag"><path d="M720 130 L720 40" stroke="#f5c451" stroke-width="4" /><rect x="720" y="40" width="150" height="44" rx="6" fill="#f5c451" /><text x="732" y="70">STESEN 1</text></g>
+        </svg>
+      </div>
+      <div id="s04-map-tag" class="s04-mono">Ilustrasi · kad disembunyikan di sekitar kelas</div>
+      <div class="s04-mono s04-h">Peraturan aktiviti</div>
+      <h2>Cari kad, temui petikan</h2>
+      <div class="s04-rule" id="s04-r1" style="top:380px"><b>1</b><p>Kad mercu tanda disorokkan di beberapa stesen di dalam kelas.</p></div>
+      <div class="s04-rule" id="s04-r2" style="top:540px"><b>2</b><p>Apabila diberi isyarat, murid bergerak mencari kad tersebut.</p></div>
+    </div>
+
+    <div id="s04-foot">
+      <div id="s04-foot-move">
+        <video id="s04-v1" class="clip" src="assets/broll/search.mp4" data-start="18" data-duration="12.6" data-media-start="2" muted playsinline></video>
+      </div>
+      <div class="s04-corner" style="left:50px;top:40px;border-width:4px 0 0 4px"></div>
+      <div class="s04-corner" style="right:50px;top:40px;border-width:4px 4px 0 0"></div>
+      <div class="s04-corner" style="left:50px;bottom:40px;border-width:0 0 4px 4px"></div>
+      <div class="s04-corner" style="right:50px;bottom:40px;border-width:0 4px 4px 0"></div>
+      <div id="s04-foot-label"><div class="s04-mono">Rakaman sebenar</div><p>Murid mencari kad mercu tanda</p></div>
+      <div id="s04-found"><span class="s04-mono" style="font-size:15px">Langkah 3</span><br />Kad ditemui → kumpulan menerima petikan</div>
+      <div id="s04-cardpip">
+        <video id="s04-v2" class="clip" src="assets/broll/card.mp4" data-start="23.8" data-duration="6.6" data-media-start="2.2" muted playsinline></video>
+      </div>
+    </div>
+
+    <div id="s04-task" class="clip" data-start="30.6" data-duration="19.6">
+      <div class="s04-mono s04-h">Tugasan bahasa</div>
+      <h2>Baca · Kenal pasti · Betulkan</h2>
+      <div id="s04-steps">
+        <div class="s04-step" id="s04-s1"><small>01</small><span>Baca petikan</span></div>
+        <div class="s04-arr" id="s04-ar1"></div>
+        <div class="s04-step" id="s04-s2"><small>02</small><span>Kenal pasti kesalahan</span></div>
+        <div class="s04-arr" id="s04-ar2"></div>
+        <div class="s04-step" id="s04-s3"><small>03</small><span>Betulkan ayat</span></div>
+      </div>
+      <div id="s04-example">
+        <div class="s04-mono">Contoh daripada petikan murid</div>
+        <div id="s04-ex-line"><span class="s04-cap">M<i></i></span>enara <span class="s04-cap">B<i></i></span>erkembar <span class="s04-cap">P<i></i></span>etronas</div>
+        <div id="s04-ex-note">Kata nama khas — setiap perkataan dimulakan dengan huruf besar.</div>
+      </div>
+    </div>
+
+    <div id="s04-read">
+      <div id="s04-read-move">
+        <video id="s04-v3" class="clip" src="assets/broll/reading.mp4" data-start="50.2" data-duration="11.8" muted playsinline></video>
+      </div>
+      <div id="s04-read-band"></div>
+      <div id="s04-read-text"><div class="s04-mono">Peranan guru</div><p>Fasilitator: memantau setiap kumpulan, membimbing dan menyemak jawapan bersama-sama.</p></div>
+    </div>
+    <div id="s04-fade" class="clip" data-start="61.3" data-duration="0.7"></div>
+  </div>
+  <script>
+    (function () {
+      const g = document.getElementById("s04-grid");
+      for (let x = 40; x < 820; x += 60) { const l = document.createElementNS("http://www.w3.org/2000/svg", "line"); l.setAttribute("x1", x); l.setAttribute("x2", x); l.setAttribute("y1", 0); l.setAttribute("y2", 640); l.setAttribute("class", "s04-gridl"); g.appendChild(l); }
+      for (let y = 40; y < 640; y += 60) { const l = document.createElementNS("http://www.w3.org/2000/svg", "line"); l.setAttribute("y1", y); l.setAttribute("y2", y); l.setAttribute("x1", 0); l.setAttribute("x2", 820); l.setAttribute("class", "s04-gridl"); g.appendChild(l); }
+      const route = document.getElementById("s04-route");
+      const L = (route.getTotalLength && route.getTotalLength()) || 900;
+      route.style.strokeDasharray = L + " " + (L + 20);
+
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s04-topo", { backgroundPosition: "0px 0px" }, { backgroundPosition: "-120px -60px", duration: 62, ease: "none" }, 0);
+      tl.fromTo("#s04-compass", { opacity: 0, rotation: -40, scale: 0.85 }, { opacity: 1, rotation: 0, scale: 1, duration: 1.6, ease: "power3.out" }, 0.1);
+      tl.fromTo("#s04-needle", { rotation: -120, transformOrigin: "100px 100px" }, { rotation: 18, duration: 2.6, ease: "elastic.out(1, 0.4)" }, 0.6);
+      tl.fromTo("#s04-num", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 1.0, ease: "power3.out" }, 0.4);
+      tl.fromTo("#s04-chap-tag", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 1.0);
+      tl.fromTo("#s04-chap-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: "power4.out" }, 1.2);
+      tl.fromTo("#s04-chap-sub", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7 }, 2.0);
+      tl.to("#s04-chap > *", { opacity: 0, duration: 0.5, ease: "power2.in" }, 5.2);
+
+      tl.fromTo("#s04-map", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }, 5.7);
+      tl.fromTo("#s04-map-tag", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 6.4);
+      tl.fromTo(route, { strokeDashoffset: L + 10 }, { strokeDashoffset: 0, duration: 6.5, ease: "power1.inOut" }, 6.4);
+      ["#s04-q1", "#s04-q2", "#s04-q3"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, scale: 0.4, transformOrigin: "center" }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(2.4)" }, 7.4 + i * 1.6));
+      tl.fromTo("#s04-flag", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "back.out(2)" }, 12.7);
+      tl.fromTo("#s04-plan .s04-h", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 6.0);
+      tl.fromTo("#s04-plan h2", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 6.2);
+      tl.fromTo("#s04-r1", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 7.8);
+      tl.fromTo("#s04-r2", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 11.6);
+      tl.to("#s04-plan > *", { opacity: 0, duration: 0.5, ease: "power2.in" }, 17.4);
+
+      tl.fromTo("#s04-foot-move", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 18);
+      tl.fromTo("#s04-foot-move", { scale: 1.0 }, { scale: 1.07, duration: 12.6, ease: "none", immediateRender: false }, 18);
+      tl.fromTo("#s04-foot .s04-corner", { opacity: 0, scale: 1.3 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out", stagger: 0.06 }, 18.3);
+      tl.fromTo("#s04-foot-label", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.6 }, 18.8);
+      tl.fromTo("#s04-cardpip", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.7, ease: "back.out(1.6)" }, 23.8);
+      tl.fromTo("#s04-found", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, 24.6);
+      tl.to("#s04-foot > *", { opacity: 0, duration: 0.5 }, 30.1);
+
+      tl.fromTo("#s04-task .s04-h", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 30.8);
+      tl.fromTo("#s04-task h2", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 31.0);
+      ["#s04-s1", "#s04-ar1", "#s04-s2", "#s04-ar2", "#s04-s3"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 32.2 + i * 0.9));
+      tl.fromTo("#s04-example", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }, 37.6);
+      tl.fromTo("#s04-ex-line .s04-cap i", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.out", stagger: 0.5 }, 39.6);
+      tl.fromTo("#s04-ex-line .s04-cap", { scale: 1 }, { scale: 1.12, duration: 0.25, yoyo: true, repeat: 1, ease: "power2.out", stagger: 0.5 }, 39.6);
+      tl.fromTo("#s04-ex-note", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7 }, 41.8);
+      tl.to("#s04-task > *", { opacity: 0, duration: 0.5 }, 49.7);
+
+      tl.fromTo("#s04-read-move", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 50.2);
+      tl.fromTo("#s04-read-move", { scale: 1.0 }, { scale: 1.06, duration: 11.8, ease: "none", immediateRender: false }, 50.2);
+      tl.fromTo("#s04-read-text", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 51.2);
+      tl.fromTo("#s04-fade", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.in" }, 61.3);
+      tl.set("#s04-foot", { opacity: 0 }, 0); tl.set("#s04-foot", { opacity: 1 }, 18); tl.set("#s04-foot", { opacity: 0 }, 30.6);
+      tl.set("#s04-read", { opacity: 0 }, 0); tl.set("#s04-read", { opacity: 1 }, 50.2); tl.set("#s04-read", { opacity: 0 }, 62.0);
+      window.__timelines["s04"] = tl;
+    })();
+  </script>
+</template>

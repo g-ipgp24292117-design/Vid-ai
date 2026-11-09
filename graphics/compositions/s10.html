@@ -1,0 +1,62 @@
+<template>
+  <style>
+    @font-face { font-family: DocDisplay; src: url("assets/fonts/montserrat-latin-800-normal.woff2"); font-weight: 800; }
+    @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-600-normal.woff2"); font-weight: 600; }
+    @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-500-normal.woff2"); font-weight: 500; }
+    #root { position: absolute; inset: 0; overflow: hidden; color: #fff; font-family: DocBody, sans-serif;
+      background: radial-gradient(1200px 800px at 50% 100%, #1a3a7a 0%, #0c1d45 45%, #050c1d 85%); }
+    .s10-mono { font-family: DocMono, monospace; font-weight: 500; letter-spacing: .34em; text-transform: uppercase; color: #7cc4ff; }
+    #s10-particles { position: absolute; inset: 0; }
+    #s10-particles i { position: absolute; border-radius: 50%; background: #f5c451; box-shadow: 0 0 10px #f5c451; }
+    #s10-towers { position: absolute; left: 50%; bottom: 0; width: 360px; height: 840px; margin-left: -180px; opacity: .35; }
+    #s10-towers polyline, #s10-towers path { fill: none; stroke: #f5c451; stroke-width: 2.2; filter: drop-shadow(0 0 8px rgba(245,196,81,.6)); }
+    #s10-l1, #s10-l2 { position: absolute; left: 0; right: 0; text-align: center; font-family: DocDisplay; font-weight: 800; letter-spacing: -.01em; }
+    #s10-l1 { top: 330px; font-size: 64px; line-height: 1.15; }
+    #s10-l2 { top: 520px; font-size: 44px; color: #f5c451; }
+    #s10-end { position: absolute; left: 0; right: 0; top: 760px; text-align: center; }
+    #s10-end .s10-mono { font-size: 22px; }
+    #s10-end b { display: block; margin-top: 22px; font-family: DocDisplay; font-weight: 800; font-size: 58px; }
+    #s10-black { position: absolute; inset: 0; background: #000; }
+  </style>
+  <div id="root" data-composition-id="s10" data-width="1920" data-height="1080">
+    <div id="s10-particles"></div>
+    <svg id="s10-towers" viewBox="0 0 300 700" preserveAspectRatio="xMidYMax meet">
+      <polyline id="s10-tw1" points="60,700 60,330 66,330 66,270 72,270 72,215 80,215 80,170 88,170 88,135 93,135 95,40 97,135 102,135 102,170 110,170 110,215 118,215 118,270 124,270 124,330 130,330 130,700" />
+      <polyline id="s10-tw2" points="170,700 170,330 176,330 176,270 182,270 182,215 190,215 190,170 198,170 198,135 203,135 205,40 207,135 212,135 212,170 220,170 220,215 228,215 228,270 234,270 234,330 240,330 240,700" />
+      <path id="s10-bridge" d="M130 400 L170 400 M130 412 L170 412 M130 412 L150 470 L170 412" />
+    </svg>
+    <div id="s10-l1" class="clip" data-start="0.8" data-duration="21.2">Belajar bahasa melalui pergerakan,<br />permainan dan teknologi.</div>
+    <div id="s10-l2" class="clip" data-start="4.2" data-duration="17.8">Ayat yang betul, keyakinan yang dibina.</div>
+    <div id="s10-end" class="clip" data-start="9" data-duration="13">
+      <div class="s10-mono">Dokumentasi Pengajaran Bahasa Melayu</div>
+      <b>Terima kasih</b>
+    </div>
+    <div id="s10-black" class="clip" data-start="19.6" data-duration="2.4"></div>
+  </div>
+  <script>
+    (function () {
+      let seed = 5;
+      const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      const host = document.getElementById("s10-particles");
+      const ps = [];
+      for (let i = 0; i < 50; i++) {
+        const d = document.createElement("i"); const s = 2 + rnd() * 4;
+        d.style.width = d.style.height = s + "px"; d.style.left = rnd() * 1920 + "px"; d.style.top = (300 + rnd() * 800) + "px";
+        d.style.opacity = (0.2 + rnd() * 0.6).toFixed(2); host.appendChild(d); ps.push([d, 120 + rnd() * 260]);
+      }
+      const tl = gsap.timeline({ paused: true });
+      ps.forEach(([d, dy]) => tl.fromTo(d, { y: 0 }, { y: -dy, duration: 22, ease: "none" }, 0));
+      ["#s10-tw1", "#s10-tw2", "#s10-bridge"].forEach((s, i) => {
+        const el = document.querySelector(s); const L = (el.getTotalLength && el.getTotalLength()) || 1400;
+        el.style.strokeDasharray = L + " " + (L + 20);
+        tl.fromTo(el, { strokeDashoffset: L + 10 }, { strokeDashoffset: 0, duration: 4, ease: "power2.inOut" }, 0.2 + i * 0.4);
+      });
+      tl.fromTo("#s10-l1", { opacity: 0, y: 30, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.2, ease: "power3.out" }, 0.8);
+      tl.fromTo("#s10-l2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" }, 4.2);
+      tl.fromTo("#s10-end .s10-mono", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" }, 9.0);
+      tl.fromTo("#s10-end b", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" }, 10.2);
+      tl.fromTo("#s10-black", { opacity: 0 }, { opacity: 1, duration: 2.0, ease: "power1.inOut" }, 19.6);
+      window.__timelines["s10"] = tl;
+    })();
+  </script>
+</template>

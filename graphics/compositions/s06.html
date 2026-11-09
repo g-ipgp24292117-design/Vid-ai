@@ -1,0 +1,189 @@
+<template>
+  <style>
+    @font-face { font-family: DocDisplay; src: url("assets/fonts/montserrat-latin-800-normal.woff2"); font-weight: 800; }
+    @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-400-normal.woff2"); font-weight: 400; }
+    @font-face { font-family: DocBody; src: url("assets/fonts/inter-latin-600-normal.woff2"); font-weight: 600; }
+    @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-500-normal.woff2"); font-weight: 500; }
+    @font-face { font-family: DocMono; src: url("assets/fonts/jetbrains-mono-latin-700-normal.woff2"); font-weight: 700; }
+    #root { position: absolute; inset: 0; overflow: hidden; color: #fff; font-family: DocBody, sans-serif;
+      background: radial-gradient(1000px 700px at 50% 50%, #0b2a5e 0%, #061430 55%, #030a1a 100%); }
+    .s06-mono { font-family: DocMono, monospace; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: #5ff0ff; }
+    #s06-hex { position: absolute; inset: 0; opacity: .12;
+      background-image: linear-gradient(rgba(95,240,255,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(95,240,255,.6) 1px, transparent 1px);
+      background-size: 48px 48px; }
+    #s06-scan { position: absolute; left: 0; right: 0; height: 160px; top: -160px;
+      background: linear-gradient(transparent, rgba(95,240,255,.10) 70%, rgba(95,240,255,.55) 98%, transparent); }
+    /* chapter */
+    #s06-chap { position: absolute; inset: 0; }
+    #s06-ring { position: absolute; right: 230px; top: 230px; width: 600px; height: 600px; }
+    #s06-ring circle { fill: none; stroke: #5ff0ff; }
+    #s06-num { position: absolute; left: 150px; top: 250px; font-family: DocDisplay; font-weight: 800; font-size: 260px; line-height: 1; color: transparent; -webkit-text-stroke: 3px #5ff0ff; }
+    #s06-chap-tag { position: absolute; left: 160px; top: 560px; font-size: 24px; }
+    #s06-chap-title { position: absolute; left: 150px; top: 610px; width: 1100px; font-family: DocDisplay; font-weight: 800; font-size: 92px; line-height: 1.02; letter-spacing: -.02em; }
+    #s06-chap-sub { position: absolute; left: 160px; top: 820px; font-size: 30px; color: #bfefff; }
+    /* equation */
+    #s06-eq { position: absolute; inset: 0; perspective: 1600px; }
+    #s06-eq .s06-mono.s06-h { position: absolute; left: 0; right: 0; top: 120px; text-align: center; font-size: 22px; }
+    #s06-eq h2 { position: absolute; left: 0; right: 0; top: 160px; text-align: center; font-family: DocDisplay; font-weight: 800; font-size: 62px; }
+    .s06-plane { position: absolute; top: 330px; width: 640px; height: 400px; border-radius: 20px; overflow: hidden; }
+    #s06-real { left: 220px; box-shadow: 0 0 0 2px rgba(255,255,255,.7); }
+    #s06-real video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(.85); }
+    #s06-digital { left: 1060px; background: rgba(95,240,255,.06); box-shadow: 0 0 0 2px #5ff0ff, 0 0 40px rgba(95,240,255,.4) inset; }
+    .s06-bub { position: absolute; width: 150px; height: 150px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-family: DocDisplay; font-weight: 800; font-size: 28px; color: #fff;
+      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.55), rgba(124,196,255,.25) 45%, rgba(30,107,255,.25)); border: 2px solid rgba(255,255,255,.8); box-shadow: 0 0 30px rgba(95,240,255,.6); }
+    #s06-qbar { position: absolute; left: 60px; right: 60px; top: 34px; padding: 14px 20px; border-radius: 12px; background: rgba(60,40,140,.85); border: 1px solid rgba(255,255,255,.5); font-weight: 600; font-size: 22px; text-align: center; }
+    .s06-cap { position: absolute; top: 760px; width: 640px; text-align: center; }
+    .s06-cap b { display: block; font-family: DocDisplay; font-weight: 800; font-size: 40px; }
+    .s06-cap span { font-size: 24px; color: #bfefff; }
+    #s06-plus { position: absolute; left: 905px; top: 480px; width: 110px; text-align: center; font-family: DocDisplay; font-weight: 800; font-size: 90px; color: #5ff0ff; }
+    #s06-result { position: absolute; left: 0; right: 0; top: 880px; text-align: center; font-family: DocDisplay; font-weight: 800; font-size: 54px; }
+    #s06-result em { font-style: normal; color: #5ff0ff; }
+    /* how */
+    #s06-how { position: absolute; inset: 0; }
+    #s06-holo { position: absolute; left: 90px; top: 170px; width: 1100px; height: 619px; }
+    #s06-holo-in { position: absolute; inset: 0; border-radius: 10px; overflow: hidden; }
+    #s06-holo video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    #s06-holo-scan { position: absolute; left: 0; right: 0; height: 6px; top: 0; background: #5ff0ff; box-shadow: 0 0 24px 6px rgba(95,240,255,.8); }
+    .s06-br { position: absolute; width: 60px; height: 60px; border-color: #5ff0ff; border-style: solid; }
+    #s06-hud { position: absolute; left: 110px; top: 815px; display: flex; gap: 18px; }
+    .s06-pill { padding: 12px 22px; border-radius: 10px; font-family: DocMono; font-weight: 700; font-size: 20px; letter-spacing: .12em; color: #031024; background: #5ff0ff; }
+    .s06-pill.s06-ghost { color: #5ff0ff; background: transparent; border: 2px solid #5ff0ff; }
+    #s06-how-side { position: absolute; left: 1260px; top: 190px; width: 580px; }
+    #s06-how-side .s06-mono { font-size: 20px; }
+    #s06-how-side h2 { font-family: DocDisplay; font-weight: 800; font-size: 54px; line-height: 1.08; margin: 16px 0 36px; }
+    .s06-flow { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 30px; }
+    .s06-flow b { flex: none; width: 56px; height: 56px; border-radius: 50%; border: 2px solid #5ff0ff; display: flex; align-items: center; justify-content: center; font-family: DocMono; font-weight: 700; font-size: 22px; color: #5ff0ff; }
+    .s06-flow p { font-size: 28px; line-height: 1.35; font-weight: 600; padding-top: 8px; }
+    /* why */
+    #s06-why { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    #s06-why .s06-mono { font-size: 22px; margin-bottom: 26px; }
+    #s06-why h2 { font-family: DocDisplay; font-weight: 800; font-size: 66px; margin-bottom: 60px; }
+    .s06-why-row { position: relative; width: 1100px; padding: 26px 34px; margin-bottom: 22px; display: flex; gap: 30px; align-items: baseline;
+      background: rgba(95,240,255,.06); border-left: 4px solid #5ff0ff; }
+    .s06-why-row b { font-family: DocDisplay; font-weight: 800; font-size: 40px; min-width: 520px; }
+    .s06-why-row span { font-size: 28px; color: #bfefff; }
+    #s06-fade { position: absolute; inset: 0; background: #071229; }
+  </style>
+  <div id="root" data-composition-id="s06" data-width="1920" data-height="1080">
+    <div id="s06-hex"></div>
+    <div id="s06-scan"></div>
+
+    <div id="s06-chap" class="clip" data-start="0" data-duration="5.6">
+      <svg id="s06-ring" viewBox="0 0 200 200">
+        <circle id="s06-r1" cx="100" cy="100" r="92" stroke-width="1.5" stroke-dasharray="10 6" />
+        <circle id="s06-r2" cx="100" cy="100" r="74" stroke-width="3" stroke-dasharray="120 40" />
+        <circle id="s06-r3" cx="100" cy="100" r="56" stroke-width="1" />
+      </svg>
+      <div id="s06-num">06</div>
+      <div id="s06-chap-tag" class="s06-mono">Penerangan</div>
+      <div id="s06-chap-title">Teknologi Augmented Reality</div>
+      <div id="s06-chap-sub">Realiti terimbuh di dalam bilik darjah</div>
+    </div>
+
+    <div id="s06-eq">
+      <div class="s06-mono s06-h">Konsep</div>
+      <h2>Apakah Augmented Reality?</h2>
+      <div class="s06-plane" id="s06-real">
+        <video id="s06-v1" class="clip" src="assets/broll/ar.mp4" data-start="5.2" data-duration="16" muted playsinline></video>
+      </div>
+      <div class="s06-plane" id="s06-digital">
+        <div id="s06-qbar">Ayah membeli seekor kerusi di kedai perabot itu.</div>
+        <div class="s06-bub" id="s06-b1" style="left:50px;top:170px">Sebuah</div>
+        <div class="s06-bub" id="s06-b2" style="left:245px;top:200px">Sebiji</div>
+        <div class="s06-bub" id="s06-b3" style="left:440px;top:170px">Sehelai</div>
+      </div>
+      <div id="s06-plus">+</div>
+      <div class="s06-cap" id="s06-cap1" style="left:220px"><b>Dunia sebenar</b><span>murid, kelas, kamera</span></div>
+      <div class="s06-cap" id="s06-cap2" style="left:1060px"><b>Elemen digital</b><span>soalan &amp; gelembung jawapan</span></div>
+      <div id="s06-result">= <em>Augmented Reality</em>: digital di atas dunia nyata</div>
+    </div>
+
+    <div id="s06-how">
+      <div id="s06-holo">
+        <div id="s06-holo-in">
+          <video id="s06-v2" class="clip" src="assets/broll/ar.mp4" data-start="21.2" data-duration="17.4" data-media-start="2" muted playsinline></video>
+          <div id="s06-holo-scan"></div>
+        </div>
+        <div class="s06-br" style="left:-14px;top:-14px;border-width:4px 0 0 4px"></div>
+        <div class="s06-br" style="right:-14px;top:-14px;border-width:4px 4px 0 0"></div>
+        <div class="s06-br" style="left:-14px;bottom:-14px;border-width:0 0 4px 4px"></div>
+        <div class="s06-br" style="right:-14px;bottom:-14px;border-width:0 4px 4px 0"></div>
+      </div>
+      <div id="s06-hud">
+        <div class="s06-pill" id="s06-p1">KAMERA AKTIF</div>
+        <div class="s06-pill s06-ghost" id="s06-p2">TANGAN DIKESAN</div>
+        <div class="s06-pill s06-ghost" id="s06-p3">RAKAMAN SEBENAR</div>
+      </div>
+      <div id="s06-how-side">
+        <div class="s06-mono">Dalam kelas ini</div>
+        <h2>Murid menjadi sebahagian daripada permainan</h2>
+        <div class="s06-flow" id="s06-f1"><b>01</b><p>Kamera komputer riba merakam murid secara langsung.</p></div>
+        <div class="s06-flow" id="s06-f2"><b>02</b><p>Imej murid dipaparkan pada skrin interaktif.</p></div>
+        <div class="s06-flow" id="s06-f3"><b>03</b><p>Tangan murid dikesan untuk memilih jawapan.</p></div>
+      </div>
+    </div>
+
+    <div id="s06-why" class="clip" data-start="38.6" data-duration="13.4">
+      <div class="s06-mono">Mengapa AR?</div>
+      <h2>Nilai kepada pembelajaran</h2>
+      <div class="s06-why-row" id="s06-w1"><b>Penglibatan aktif</b><span>pengalaman baharu yang interaktif</span></div>
+      <div class="s06-why-row" id="s06-w2"><b>Pembelajaran kinestetik</b><span>murid berdiri dan bergerak</span></div>
+      <div class="s06-why-row" id="s06-w3"><b>Maklum balas serta-merta</b><span>murid terus tahu betul atau salah</span></div>
+    </div>
+    <div id="s06-fade" class="clip" data-start="51.3" data-duration="0.7"></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s06-hex", { backgroundPosition: "0px 0px" }, { backgroundPosition: "0px 96px", duration: 52, ease: "none" }, 0);
+      [0.4, 21.4, 38.8].forEach((t) => tl.fromTo("#s06-scan", { y: 0 }, { y: 1400, duration: 1.6, ease: "power1.inOut" }, t));
+      tl.fromTo("#s06-ring", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 1.2, ease: "power3.out" }, 0.1);
+      tl.fromTo("#s06-r1", { rotation: 0, transformOrigin: "100px 100px" }, { rotation: 90, duration: 5.6, ease: "none" }, 0);
+      tl.fromTo("#s06-r2", { rotation: 0, transformOrigin: "100px 100px" }, { rotation: -160, duration: 5.6, ease: "none" }, 0);
+      tl.fromTo("#s06-num", { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 1.0, ease: "power3.out" }, 0.4);
+      tl.fromTo("#s06-chap-tag", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 1.0);
+      tl.fromTo("#s06-chap-title", { opacity: 0, y: 40, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.9, ease: "power4.out" }, 1.2);
+      tl.fromTo("#s06-chap-sub", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7 }, 2.0);
+      tl.to("#s06-chap > *", { opacity: 0, duration: 0.5, ease: "power2.in" }, 4.9);
+
+      tl.fromTo("#s06-eq .s06-h", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 5.4);
+      tl.fromTo("#s06-eq h2", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 5.6);
+      tl.fromTo("#s06-real", { opacity: 0, rotationY: 28, x: -60 }, { opacity: 1, rotationY: 14, x: 0, duration: 1.0, ease: "power3.out" }, 6.4);
+      tl.fromTo("#s06-cap1", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 }, 7.0);
+      tl.fromTo("#s06-plus", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(2)" }, 8.6);
+      tl.fromTo("#s06-digital", { opacity: 0, rotationY: -28, x: 60 }, { opacity: 1, rotationY: -14, x: 0, duration: 1.0, ease: "power3.out" }, 9.2);
+      tl.fromTo("#s06-qbar", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: 0.5 }, 9.8);
+      ["#s06-b1", "#s06-b2", "#s06-b3"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, scale: 0.3 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(2.5)" }, 10.2 + i * 0.35));
+      tl.fromTo("#s06-cap2", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 }, 10.6);
+      // merge: digital layer slides over the real plane
+      tl.to("#s06-plus, #s06-cap1, #s06-cap2", { opacity: 0, duration: 0.4 }, 14.2);
+      tl.to("#s06-real", { x: 420, rotationY: 0, duration: 1.2, ease: "power3.inOut" }, 14.4);
+      tl.to("#s06-digital", { x: -420, rotationY: 0, duration: 1.2, ease: "power3.inOut" }, 14.4);
+      tl.fromTo("#s06-result", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 15.8);
+      tl.to("#s06-eq > *", { opacity: 0, duration: 0.5 }, 20.6);
+
+      tl.fromTo("#s06-holo", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.8, ease: "power3.out" }, 21.3);
+      tl.fromTo("#s06-holo-in", { scale: 1.0 }, { scale: 1.05, duration: 17, ease: "none" }, 21.3);
+      tl.fromTo("#s06-holo-scan", { y: 0, opacity: 1 }, { y: 613, duration: 2.4, ease: "power1.inOut" }, 22.0);
+      tl.to("#s06-holo-scan", { opacity: 0, duration: 0.3 }, 24.4);
+      ["#s06-p1", "#s06-p2", "#s06-p3"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 23.0 + i * 0.6));
+      tl.fromTo("#s06-how-side .s06-mono", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 22.0);
+      tl.fromTo("#s06-how-side h2", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 22.3);
+      ["#s06-f1", "#s06-f2", "#s06-f3"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 25.0 + i * 3.6));
+      tl.to("#s06-how > *", { opacity: 0, duration: 0.5 }, 38.0);
+
+      tl.fromTo("#s06-why .s06-mono", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 38.8);
+      tl.fromTo("#s06-why h2", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 39.0);
+      ["#s06-w1", "#s06-w2", "#s06-w3"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, x: -80, clipPath: "inset(0 100% 0 0)" }, { opacity: 1, x: 0, clipPath: "inset(0 0% 0 0)", duration: 0.8, ease: "power3.out" }, 40.4 + i * 3.0));
+      tl.fromTo("#s06-fade", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.in" }, 51.3);
+      tl.set("#s06-eq", { opacity: 0 }, 0); tl.set("#s06-eq", { opacity: 1 }, 5.2); tl.set("#s06-eq", { opacity: 0 }, 21.2);
+      tl.set("#s06-how", { opacity: 0 }, 0); tl.set("#s06-how", { opacity: 1 }, 21.2); tl.set("#s06-how", { opacity: 0 }, 38.6);
+      window.__timelines["s06"] = tl;
+    })();
+  </script>
+</template>
