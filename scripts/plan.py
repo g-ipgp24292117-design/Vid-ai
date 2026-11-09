@@ -100,7 +100,7 @@ LABEL_SFX = {"chapter": ("whoosh-short", -18, 0.05), "note": ("click-soft", -20,
 
 MUSIC_GAIN_DB = {"graphics": -15.0, "footage": -27.0}
 # Per-scene music gain over graphics, measured so every explanation scene lands near -19 LUFS (dialogue ~ -16).
-SCENE_MUSIC_GAIN_DB = {"s01": -14.5, "s02": -14.5, "s04": -11.0, "s06": -11.0, "s07": -12.0, "s09": -9.5, "s10": -11.0}
+SCENE_MUSIC_GAIN_DB = {"s01": -14.5, "s02": -14.5, "s04": -11.0, "s06": -8.0, "s07": -12.0, "s09": -9.5, "s10": -9.5}
 
 
 def snap(t):
