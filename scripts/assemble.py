@@ -25,7 +25,7 @@ OUT_NAME = "DOKUMENTASI_PENGAJARAN_BAHASA_MELAYU_FINAL.mp4"
 NAVY = "0x071229"
 GRADE = ("eq=contrast=1.07:saturation=0.93:gamma=0.97,"
          "colorbalance=rs=-0.02:bs=0.035:rm=-0.01:bm=0.015:rh=0.01:bh=-0.01")
-VENC = ["-c:v", "libx264", "-preset", "medium", "-crf", "19", "-pix_fmt", "yuv420p", "-r", str(FPS),
+VENC = ["-c:v", "libx264", "-preset", "medium", "-crf", "21", "-pix_fmt", "yuv420p", "-r", str(FPS),
         "-g", "60", "-profile:v", "high", "-video_track_timescale", "15360"]
 
 
