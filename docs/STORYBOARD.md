@@ -17,7 +17,7 @@ Tipografi: Montserrat 800 (tajuk), Inter (teks), JetBrains Mono (label HUD). Gre
 |---|---|---|---|
 | 0:00–0:05 | Latar navy, grid & partikel | Garis cahaya melebar, titik emas, tag "Dokumentasi Pengajaran & Pembelajaran" | Riser → impact |
 | 0:04–0:13 | Tajuk | "Dari Mercu Tanda / **ke Misi Tembak Kata**" (reveal topeng), subtajuk | — |
-| 0:13–0:29 | B-roll kelas (IMG_8232 0–16s) dalam bingkai kaca | Lower third animasi: **Guru Pelatih · Bahasa Melayu** (boleh tukar nama dalam HyperFrames: pemboleh ubah `teacher_name`) | Whoosh |
+| 0:13–0:29 | B-roll kelas (IMG_8232 0–16s) dalam bingkai kaca | Pengenalan nama animasi: **MUHAMMAD AIMAN NAJMI BIN AZMI HELMI** · Guru Pelatih · Bahasa Melayu (pemboleh ubah `teacher_name` / `teacher_role` dalam HyperFrames) | Whoosh |
 | 0:30–0:46 | B-roll murid angkat tangan | 4 kad maklumat: Mata pelajaran, Tema, Objektif, Aspek bahasa | — |
 | 0:46–1:00 | Garis masa | "Lima Langkah Satu Misi": 5 nod dilukis satu demi satu | Whoosh |
 Muzik: *cinematic inspirational*. Peralihan: dip ke navy 0.7 s.

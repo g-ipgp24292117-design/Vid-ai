@@ -30,6 +30,5 @@ Semua angka di bawah **diukur** pada fail akhir (ffprobe / ffmpeg). Audio tidak 
 - **Tiada narasi** (Pilihan C). Segmen penerangan menggunakan teks, motion graphics, B-roll sebenar dan muzik.
 - **Muzik latar dijana secara tempatan (MusicGen small)**: enam klip 20 s yang digelung dengan crossfade. Kualitinya sederhana dan tidak didengar oleh manusia. Untuk muzik berkualiti studio, log masuk HeyGen (`npx hyperframes auth login`) atau sediakan trek sendiri dan jalankan semula `scripts/assemble.py audio mux`.
 - **Transkrip** dihasilkan dengan Whisper tempatan (kunci ElevenLabs ditolak). Ia digunakan untuk titik potong dan storyboard sahaja, tidak dipaparkan sebagai sari kata.
-- **Nama guru** dipaparkan sebagai "Guru Pelatih" kerana nama tidak diberikan. Tukar pemboleh ubah `teacher_name` dalam `graphics/index.html` (atau melalui HyperFrames Studio), kemudian render semula S01.
 - Soalan 5 permainan tidak dirakam, jadi tiada kad untuknya. Soalan 8 tidak diberi kad kerana label akan menutup soalan di TV (ayat dan jawapannya kekal jelas dalam rakaman).
 - IMG_8234 dan IMG_8240 tiada dalam folder Drive.
