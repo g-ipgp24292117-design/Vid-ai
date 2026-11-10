@@ -1,0 +1,166 @@
+{
+  "intro": {
+    "lines": [
+      { "id": "i1", "text": "Perhatian, semua detektif bahasa!" },
+      { "id": "i2", "text": "Satu laporan sulit telah diterima." },
+      { "id": "i3", "text": "Pelbagai kesalahan bahasa telah dikesan dalam bahan bacaan di sekitar kita." },
+      { "id": "i4", "text": "Tugas anda ialah mengenal pasti kesalahan, mengklasifikasikannya, dan membetulkan setiap ayat." },
+      { "id": "i5", "text": "Bersedia?" },
+      { "id": "i6", "text": "Operasi bermula sekarang!" }
+    ]
+  },
+  "cases": [
+    {
+      "n": 1,
+      "category": "HURUF BESAR",
+      "sub": "KATA NAMA KHAS",
+      "material": "MAJALAH SEKOLAH",
+      "kind": "magazine",
+      "wrong": ["Saya bertemu dengan ", "ali", " di sekolah."],
+      "right": ["Saya bertemu dengan ", "Ali", " di sekolah."],
+      "explain": "Nama khas manusia seperti Ali mesti dimulakan dengan huruf besar.",
+      "vo": {
+        "intro": "Kes satu. Bahan bukti pertama ialah sebuah majalah sekolah.",
+        "wrong": "Saya bertemu dengan ali di sekolah.",
+        "detect": "Imbasan selesai. Kesalahan huruf besar dikesan!",
+        "explain": "Nama khas manusia seperti Ali mesti dimulakan dengan huruf besar.",
+        "correct": "Ayat yang betul, Saya bertemu dengan Ali di sekolah.",
+        "close": "Kes satu, selesai!"
+      }
+    },
+    {
+      "n": 2,
+      "category": "KATA SENDI NAMA",
+      "sub": "DI + TEMPAT",
+      "material": "PAPAN TANDA SEKOLAH",
+      "kind": "sign",
+      "wrong": ["Adik belajar ", "disekolah", "."],
+      "right": ["Adik belajar ", "di sekolah", "."],
+      "explain": "Kata sendi nama di perlu dijarakkan daripada kata nama tempat.",
+      "vo": {
+        "intro": "Kes dua. Sebuah papan tanda sekolah menarik perhatian kita.",
+        "wrong": "Adik belajar disekolah.",
+        "detect": "Amaran! Kesalahan kata sendi nama dikesan.",
+        "explain": "Kata sendi nama di, perlu dijarakkan daripada kata nama tempat.",
+        "correct": "Ayat yang betul, Adik belajar di sekolah.",
+        "close": "Kes dua, selesai!"
+      }
+    },
+    {
+      "n": 3,
+      "category": "IMBUHAN",
+      "sub": "MEMPER-",
+      "material": "SURAT RASMI",
+      "kind": "letter",
+      "wrong": ["Mereka ", "memperolehi", " hadiah dalam pertandingan."],
+      "right": ["Mereka ", "memperoleh", " hadiah dalam pertandingan."],
+      "explain": "Perkataan memperoleh tidak menggunakan huruf i pada hujung perkataan.",
+      "vo": {
+        "intro": "Kes tiga. Kita menemui sepucuk surat rasmi.",
+        "wrong": "Mereka memperolehi hadiah dalam pertandingan.",
+        "detect": "Kesalahan imbuhan dikesan!",
+        "explain": "Perkataan memperoleh, tidak menggunakan huruf i pada hujung perkataan.",
+        "correct": "Ayat yang betul, Mereka memperoleh hadiah dalam pertandingan.",
+        "close": "Kes tiga, selesai!"
+      }
+    },
+    {
+      "n": 4,
+      "category": "KATA PEMERI",
+      "sub": "ADALAH",
+      "material": "POSTER PROGRAM SEKOLAH",
+      "kind": "poster",
+      "wrong": ["Tujuan program ini ", "adalah untuk", " membantu murid."],
+      "right": ["Tujuan program ini ", "adalah", " membantu murid."],
+      "explain": "Dalam ayat ini, kata pemeri adalah tidak perlu diikuti oleh kata untuk.",
+      "vo": {
+        "intro": "Kes empat. Sekeping poster program sekolah sedang dianalisis.",
+        "wrong": "Tujuan program ini adalah untuk membantu murid.",
+        "detect": "Kesalahan kata pemeri dikesan!",
+        "explain": "Dalam ayat ini, kata pemeri adalah, tidak perlu diikuti oleh kata untuk.",
+        "correct": "Ayat yang betul, Tujuan program ini adalah membantu murid.",
+        "close": "Kes empat, selesai!"
+      }
+    },
+    {
+      "n": 5,
+      "category": "PENJODOH BILANGAN",
+      "sub": "SIKAT",
+      "material": "RISALAH JUALAN BUAH-BUAHAN",
+      "kind": "flyer",
+      "wrong": ["Ayah membeli ", "sebuah", " pisang."],
+      "right": ["Ayah membeli ", "sesikat", " pisang."],
+      "explain": "Penjodoh bilangan sesikat sesuai untuk pisang yang tersusun dalam satu sikat.",
+      "vo": {
+        "intro": "Kes lima. Sehelai risalah jualan buah buahan diimbas.",
+        "wrong": "Ayah membeli sebuah pisang.",
+        "detect": "Kesalahan penjodoh bilangan dikesan!",
+        "explain": "Penjodoh bilangan sesikat, sesuai untuk pisang yang tersusun dalam satu sikat.",
+        "correct": "Ayat yang betul, Ayah membeli sesikat pisang.",
+        "close": "Kes lima, selesai!"
+      }
+    },
+    {
+      "n": 6,
+      "category": "KELEWAHAN BAHASA",
+      "sub": "MAKSUD BERULANG",
+      "material": "KOMIK SEKOLAH",
+      "kind": "comic",
+      "wrong": ["Murid-murid itu ", "saling tolong-menolong antara satu sama lain", "."],
+      "right": ["Murid-murid itu ", "saling membantu", "."],
+      "explain": "Elakkan perkataan yang membawa maksud berulang atau berlebihan dalam ayat.",
+      "vo": {
+        "intro": "Kes enam. Sebuah komik sekolah menyimpan petunjuk seterusnya.",
+        "wrong": "Murid murid itu saling tolong menolong antara satu sama lain.",
+        "detect": "Kesalahan kelewahan bahasa dikesan!",
+        "explain": "Elakkan penggunaan perkataan yang membawa maksud berulang, atau berlebihan dalam ayat.",
+        "correct": "Ayat yang betul, Murid murid itu saling membantu.",
+        "close": "Kes enam, selesai!"
+      }
+    },
+    {
+      "n": 7,
+      "category": "KATA HUBUNG",
+      "sub": "WALAUPUN ... TETAPI",
+      "material": "KERATAN AKHBAR",
+      "kind": "newspaper",
+      "wrong": ["Walaupun hujan lebat ", "tetapi", " mereka tetap hadir."],
+      "right": ["Walaupun hujan lebat", ",", " mereka tetap hadir."],
+      "explain": "Jangan gunakan walaupun dan tetapi serentak dalam struktur ayat ini.",
+      "vo": {
+        "intro": "Kes tujuh. Sekeping keratan akhbar telah ditemui.",
+        "wrong": "Walaupun hujan lebat tetapi mereka tetap hadir.",
+        "detect": "Kesalahan kata hubung dikesan!",
+        "explain": "Jangan gunakan walaupun, dan tetapi, secara serentak dalam struktur ayat ini.",
+        "correct": "Ayat yang betul, Walaupun hujan lebat, mereka tetap hadir.",
+        "close": "Kes tujuh, selesai!"
+      }
+    },
+    {
+      "n": 8,
+      "category": "KATA NAFI",
+      "sub": "BUKAN / TIDAK",
+      "material": "PENGUMUMAN SEKOLAH",
+      "kind": "notice",
+      "wrong": ["Dia ", "bukan", " rajin."],
+      "right": ["Dia ", "tidak", " rajin."],
+      "explain": "Kata nafi bukan tidak digunakan untuk menafikan kata adjektif seperti rajin. Gunakan tidak.",
+      "vo": {
+        "intro": "Kes terakhir, kes lapan. Sehelai pengumuman sekolah diperiksa.",
+        "wrong": "Dia bukan rajin.",
+        "detect": "Kesalahan kata nafi dikesan!",
+        "explain": "Kata nafi bukan, tidak digunakan untuk menafikan kata adjektif seperti rajin. Gunakan kata nafi tidak.",
+        "correct": "Ayat yang betul, Dia tidak rajin.",
+        "close": "Kes lapan, selesai!"
+      }
+    }
+  ],
+  "outro": {
+    "lines": [
+      { "id": "o1", "text": "Tahniah, detektif bahasa!" },
+      { "id": "o2", "text": "Anda telah berjaya menyelesaikan kesemua lapan kesalahan bahasa." },
+      { "id": "o3", "text": "Ingat, penggunaan bahasa yang betul mencerminkan kecekapan kita berkomunikasi." },
+      { "id": "o4", "text": "Teruskan menjadi detektif bahasa yang peka dan bijak!" }
+    ]
+  }
+}

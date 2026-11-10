@@ -1,0 +1,55 @@
+{
+ "total": 300,
+ "scenes": [
+  {
+   "id": "intro",
+   "start": 0,
+   "dur": 30
+  },
+  {
+   "id": "case1",
+   "start": 30,
+   "dur": 30
+  },
+  {
+   "id": "case2",
+   "start": 60,
+   "dur": 30
+  },
+  {
+   "id": "case3",
+   "start": 90,
+   "dur": 30
+  },
+  {
+   "id": "case4",
+   "start": 120,
+   "dur": 30
+  },
+  {
+   "id": "case5",
+   "start": 150,
+   "dur": 30
+  },
+  {
+   "id": "case6",
+   "start": 180,
+   "dur": 30
+  },
+  {
+   "id": "case7",
+   "start": 210,
+   "dur": 30
+  },
+  {
+   "id": "case8",
+   "start": 240,
+   "dur": 30
+  },
+  {
+   "id": "outro",
+   "start": 270,
+   "dur": 30
+  }
+ ]
+}

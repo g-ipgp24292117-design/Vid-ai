@@ -1,0 +1,120 @@
+<template>
+  <style>
+#root { position:absolute; inset:0; overflow:hidden; background:#03050b; color:#fff; font-family:'Inter',sans-serif; }
+.bg { position:absolute; inset:0; background:radial-gradient(120% 90% at 50% 45%, #0b1630 0%, #060a16 55%, #020308 100%); }
+.grid { position:absolute; inset:-60px; background-image:linear-gradient(rgba(30,144,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(30,144,255,.07) 1px, transparent 1px); background-size:60px 60px; }
+.dust { position:absolute; border-radius:50%; background:#6cc4ff; }
+.wrap { position:absolute; inset:0; }
+.persp { position:absolute; inset:0; perspective:1600px; }
+.stage { position:absolute; inset:0; }
+.scan { position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 3px); }
+.vig { position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.75) 100%); }
+.corner { position:absolute; width:70px; height:70px; border-color:#1e90ff; border-style:solid; opacity:.85; }
+.corner.tl { left:96px; top:54px; border-width:4px 0 0 4px; } .corner.tr { right:96px; top:54px; border-width:4px 4px 0 0; }
+.corner.bl { left:96px; bottom:54px; border-width:0 0 4px 4px; } .corner.br { right:96px; bottom:54px; border-width:0 4px 4px 0; }
+.gbar { position:absolute; left:0; right:0; opacity:0; mix-blend-mode:screen; }
+.mono { font-family:'JetBrains Mono',monospace; }
+.alert { position:absolute; inset:0; pointer-events:none; box-shadow:inset 0 0 160px 30px rgba(255,30,50,.75); opacity:0; }
+
+.btitle { position:absolute; left:0; right:0; top:100px; text-align:center; font:700 30px 'JetBrains Mono'; color:#00b4ff; letter-spacing:.4em; }
+.cd { position:absolute; width:364px; height:262px; }
+.cd .red, .cd .green { position:absolute; inset:0; border-radius:14px; padding:26px 26px; }
+.cd .red { background:rgba(50,0,8,.9); border:3px solid #ff2d3d; box-shadow:0 0 30px rgba(255,45,61,.25); }
+.cd .green { background:rgba(2,36,18,.95); border:3px solid #22e57a; box-shadow:0 0 40px rgba(34,229,122,.35); opacity:0; }
+.cd .k { font-family:'Archivo Black'; font-size:56px; color:#fff; line-height:1; }
+.cd .cg { font:700 30px/1.1 'Oswald'; color:#fff; margin-top:14px; letter-spacing:.03em; min-height:66px; }
+.cd .red .st { font:700 24px 'JetBrains Mono'; color:#ff2d3d; letter-spacing:.2em; margin-top:16px; }
+.cd .green .st { font:700 24px 'JetBrains Mono'; color:#22e57a; letter-spacing:.2em; margin-top:16px; }
+.cd .green .st b { display:inline-block; width:22px; height:12px; border-left:5px solid #22e57a; border-bottom:5px solid #22e57a; transform:rotate(-45deg) translateY(-5px); margin-right:12px; }
+.win { position:absolute; left:0; right:0; top:330px; text-align:center; }
+.win .w1 { font-family:'Archivo Black'; font-size:150px; color:#22e57a; text-shadow:0 0 40px rgba(34,229,122,.7); line-height:1; }
+.win .w2 { font:700 30px 'JetBrains Mono'; color:#bfffd9; letter-spacing:.5em; margin-top:22px; }
+.bjb { position:absolute; left:0; right:0; top:640px; text-align:center; }
+.bjb .b1 { font:700 92px 'Oswald'; color:#fff; letter-spacing:.22em; }
+.bjb .b2 { width:760px; height:6px; margin:18px auto 0; background:linear-gradient(90deg,transparent,#00b4ff,transparent); }
+.dark { position:absolute; inset:0; background:#000; opacity:0; }
+.flash { position:absolute; inset:0; background:#c8ffe0; opacity:0; }
+.ray { position:absolute; left:960px; top:420px; width:2400px; height:2400px; margin:-1200px 0 0 -1200px; border-radius:50%;
+  background:repeating-conic-gradient(rgba(34,229,122,.10) 0 6deg, transparent 6deg 18deg); opacity:0; }
+</style>
+  <div id="root" data-composition-id="outro" data-width="1920" data-height="1080" data-layout-allow-overlap data-layout-allow-overflow>
+
+    <div class="bg"></div><div id="out-grid" class="grid"></div>
+    <div id="out-wrap" class="wrap">
+      <div id="out-ray" class="ray"></div>
+      <div id="out-bt" class="btitle">PAPAN PENYIASATAN · STATUS OPERASI</div>
+      <div id="out-board"><div id="out-cd0" class="cd" data-layout-ignore style="left:190px;top:200px">
+        <div class="red"><div class="k">KES 01</div><div class="cg">HURUF BESAR</div><div class="st">BELUM SELESAI</div></div>
+        <div id="out-gr0" class="green"><div class="k">KES 01</div><div class="cg">HURUF BESAR</div><div class="st"><b></b>SELESAI</div></div></div><div id="out-cd1" class="cd" data-layout-ignore style="left:582px;top:200px">
+        <div class="red"><div class="k">KES 02</div><div class="cg">KATA SENDI NAMA</div><div class="st">BELUM SELESAI</div></div>
+        <div id="out-gr1" class="green"><div class="k">KES 02</div><div class="cg">KATA SENDI NAMA</div><div class="st"><b></b>SELESAI</div></div></div><div id="out-cd2" class="cd" data-layout-ignore style="left:974px;top:200px">
+        <div class="red"><div class="k">KES 03</div><div class="cg">IMBUHAN</div><div class="st">BELUM SELESAI</div></div>
+        <div id="out-gr2" class="green"><div class="k">KES 03</div><div class="cg">IMBUHAN</div><div class="st"><b></b>SELESAI</div></div></div><div id="out-cd3" class="cd" data-layout-ignore style="left:1366px;top:200px">
+        <div class="red"><div class="k">KES 04</div><div class="cg">KATA PEMERI</div><div class="st">BELUM SELESAI</div></div>
+        <div id="out-gr3" class="green"><div class="k">KES 04</div><div class="cg">KATA PEMERI</div><div class="st"><b></b>SELESAI</div></div></div><div id="out-cd4" class="cd" data-layout-ignore style="left:190px;top:500px">
+        <div class="red"><div class="k">KES 05</div><div class="cg">PENJODOH BILANGAN</div><div class="st">BELUM SELESAI</div></div>
+        <div id="out-gr4" class="green"><div class="k">KES 05</div><div class="cg">PENJODOH BILANGAN</div><div class="st"><b></b>SELESAI</div></div></div><div id="out-cd5" class="cd" data-layout-ignore style="left:582px;top:500px">
+        <div class="red"><div class="k">KES 06</div><div class="cg">KELEWAHAN BAHASA</div><div class="st">BELUM SELESAI</div></div>
+        <div id="out-gr5" class="green"><div class="k">KES 06</div><div class="cg">KELEWAHAN BAHASA</div><div class="st"><b></b>SELESAI</div></div></div><div id="out-cd6" class="cd" data-layout-ignore style="left:974px;top:500px">
+        <div class="red"><div class="k">KES 07</div><div class="cg">KATA HUBUNG</div><div class="st">BELUM SELESAI</div></div>
+        <div id="out-gr6" class="green"><div class="k">KES 07</div><div class="cg">KATA HUBUNG</div><div class="st"><b></b>SELESAI</div></div></div><div id="out-cd7" class="cd" data-layout-ignore style="left:1366px;top:500px">
+        <div class="red"><div class="k">KES 08</div><div class="cg">KATA NAFI</div><div class="st">BELUM SELESAI</div></div>
+        <div id="out-gr7" class="green"><div class="k">KES 08</div><div class="cg">KATA NAFI</div><div class="st"><b></b>SELESAI</div></div></div></div>
+      <div id="out-win" class="win"><div class="w1">OPERASI BERJAYA!</div><div class="w2">8 / 8 KES SELESAI</div></div>
+      <div id="out-bjb" class="bjb"><div class="b1">BAHASA JIWA BANGSA</div><div id="out-bl" class="b2"></div></div>
+      <div id="out-flash" class="flash"></div>
+      <div id="out-dark" class="dark"></div>
+    </div>
+    <div class="scan"></div><div class="vig"></div>
+  <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
+  <div id="out-alert" class="alert"></div>
+  <div id="out-g1" class="gbar" style="top:180px;height:70px;background:#00b4ff"></div>
+  <div id="out-g2" class="gbar" style="top:520px;height:40px;background:#ff2d3d"></div>
+  <div id="out-g3" class="gbar" style="top:800px;height:110px;background:#7df9ff"></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+
+tl.fromTo("#out-wrap", {opacity:0, x:-60, skewX:-12}, {opacity:1, x:0, skewX:0, duration:0.45, ease:"steps(6)"}, 0);
+tl.fromTo("#out-g1", {opacity:0, x:-300}, {opacity:0.9, x:200, duration:0.12, ease:"none", yoyo:true, repeat:3}, 0);
+tl.fromTo("#out-g2", {opacity:0, x:300}, {opacity:0.8, x:-160, duration:0.1, ease:"none", yoyo:true, repeat:3}, 0.08);
+tl.fromTo("#out-g3", {opacity:0, x:-200}, {opacity:0.6, x:120, duration:0.09, ease:"none", yoyo:true, repeat:3}, 0.04);tl.fromTo("#out-bt", {opacity:0, scaleX:1.3}, {opacity:1, scaleX:1, duration:0.8, ease:"power3.out"}, 0.3);
+tl.fromTo("#out-cd0", {opacity:0, y:80, rotation:-6}, {opacity:1, y:0, rotation:0, duration:0.45, ease:"back.out(1.7)"}, 0.3);
+tl.to("#out-cd0", {keyframes:{scaleX:[1,0,1]}, duration:0.36, ease:"power2.inOut"}, 1);
+tl.fromTo("#out-gr0", {opacity:0}, {opacity:1, duration:0.01}, 1.18);
+tl.fromTo("#out-cd1", {opacity:0, y:80, rotation:6}, {opacity:1, y:0, rotation:0, duration:0.45, ease:"back.out(1.7)"}, 0.37);
+tl.to("#out-cd1", {keyframes:{scaleX:[1,0,1]}, duration:0.36, ease:"power2.inOut"}, 1.88);
+tl.fromTo("#out-gr1", {opacity:0}, {opacity:1, duration:0.01}, 2.06);
+tl.fromTo("#out-cd2", {opacity:0, y:80, rotation:-6}, {opacity:1, y:0, rotation:0, duration:0.45, ease:"back.out(1.7)"}, 0.44);
+tl.to("#out-cd2", {keyframes:{scaleX:[1,0,1]}, duration:0.36, ease:"power2.inOut"}, 2.76);
+tl.fromTo("#out-gr2", {opacity:0}, {opacity:1, duration:0.01}, 2.94);
+tl.fromTo("#out-cd3", {opacity:0, y:80, rotation:6}, {opacity:1, y:0, rotation:0, duration:0.45, ease:"back.out(1.7)"}, 0.51);
+tl.to("#out-cd3", {keyframes:{scaleX:[1,0,1]}, duration:0.36, ease:"power2.inOut"}, 3.64);
+tl.fromTo("#out-gr3", {opacity:0}, {opacity:1, duration:0.01}, 3.82);
+tl.fromTo("#out-cd4", {opacity:0, y:80, rotation:-6}, {opacity:1, y:0, rotation:0, duration:0.45, ease:"back.out(1.7)"}, 0.58);
+tl.to("#out-cd4", {keyframes:{scaleX:[1,0,1]}, duration:0.36, ease:"power2.inOut"}, 4.52);
+tl.fromTo("#out-gr4", {opacity:0}, {opacity:1, duration:0.01}, 4.7);
+tl.fromTo("#out-cd5", {opacity:0, y:80, rotation:6}, {opacity:1, y:0, rotation:0, duration:0.45, ease:"back.out(1.7)"}, 0.65);
+tl.to("#out-cd5", {keyframes:{scaleX:[1,0,1]}, duration:0.36, ease:"power2.inOut"}, 5.4);
+tl.fromTo("#out-gr5", {opacity:0}, {opacity:1, duration:0.01}, 5.58);
+tl.fromTo("#out-cd6", {opacity:0, y:80, rotation:-6}, {opacity:1, y:0, rotation:0, duration:0.45, ease:"back.out(1.7)"}, 0.72);
+tl.to("#out-cd6", {keyframes:{scaleX:[1,0,1]}, duration:0.36, ease:"power2.inOut"}, 6.28);
+tl.fromTo("#out-gr6", {opacity:0}, {opacity:1, duration:0.01}, 6.46);
+tl.fromTo("#out-cd7", {opacity:0, y:80, rotation:6}, {opacity:1, y:0, rotation:0, duration:0.45, ease:"back.out(1.7)"}, 0.79);
+tl.to("#out-cd7", {keyframes:{scaleX:[1,0,1]}, duration:0.36, ease:"power2.inOut"}, 7.16);
+tl.fromTo("#out-gr7", {opacity:0}, {opacity:1, duration:0.01}, 7.34);
+tl.to("#out-board", {scale:0.5, y:-330, opacity:0.0, duration:0.7, ease:"power3.inOut", transformOrigin:"960px 450px"}, 8.46);
+tl.to("#out-bt", {opacity:0, duration:0.4}, 8.46);
+tl.fromTo("#out-win", {opacity:0, scale:2.2, filter:"blur(20px)"}, {opacity:1, scale:1, filter:"blur(0px)", duration:0.4, ease:"power4.out"}, 8.86);
+tl.fromTo("#out-flash", {opacity:0}, {keyframes:{opacity:[0,0.7,0]}, duration:0.45, ease:"none"}, 9.11);
+tl.fromTo("#out-ray", {opacity:0, rotation:0}, {opacity:1, rotation:40, duration:21.14, ease:"none"}, 8.86);
+tl.to("#out-win", {scale:1.06, duration:20.64, ease:"none"}, 9.26);
+tl.fromTo("#out-bjb", {opacity:0, y:40, scaleX:1.2}, {opacity:1, y:0, scaleX:1, duration:0.9, ease:"power3.out"}, 21.26);
+tl.fromTo("#out-bl", {scaleX:0}, {scaleX:1, duration:1.0, ease:"power2.inOut"}, 21.56);
+tl.fromTo("#out-grid", {x:0, y:0}, {x:-60, y:-60, duration:30, ease:"none"}, 0);
+tl.to("#out-dark", {opacity:1, duration:1.4, ease:"power1.in"}, 28.5);
+
+    tl.set({}, {}, 30);
+    window.__timelines["outro"] = tl;
+  </script>
+</template>

@@ -1,0 +1,4 @@
+.hyperframes/
+renders/work-*
+renders/.*
+__pycache__/
